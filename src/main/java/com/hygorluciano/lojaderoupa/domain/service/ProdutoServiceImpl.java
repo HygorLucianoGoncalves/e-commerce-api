@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @Transactional
 @Slf4j
@@ -35,7 +37,20 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public ResponseEntity<List<VizualizarProdutoDto>> vizualizarProdutoDto() {
-        return null;
+        List<Produto> todosOsProdutos = produtoRepository.findAll();
+
+        List<VizualizarProdutoDto> dados = todosOsProdutos.stream().map(
+                dto -> new VizualizarProdutoDto(
+                        dto.getNome(),
+                        dto.getCategoria().name(),
+                        dto.getImagens(),
+                        dto.getValor(),
+                        dto.getEstoque()
+                )
+        ).collect(Collectors.toList());
+
+        log.info("Lista de produtos tudo ok");
+        return ResponseEntity.ok(dados);
     }
 
     @Override
