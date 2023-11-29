@@ -1,16 +1,20 @@
 package com.hygorluciano.lojaderoupa.domain.service;
 
+import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.exception.ValorNaoEncontrado;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.produto.ValidacaoProduto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,25 +41,44 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public ResponseEntity<List<VizualizarProdutoDto>> vizualizarProdutoDto() {
-        List<Produto> todosOsProdutos = produtoRepository.findAll();
+        try {
+            List<Produto> todosOsProdutos = produtoRepository.findAll();
 
-        List<VizualizarProdutoDto> dados = todosOsProdutos.stream().map(
-                dto -> new VizualizarProdutoDto(
-                        dto.getNome(),
-                        dto.getCategoria().name(),
-                        dto.getImagens(),
-                        dto.getValor(),
-                        dto.getEstoque()
-                )
-        ).collect(Collectors.toList());
+            List<VizualizarProdutoDto> dados = todosOsProdutos.stream().map(
+                    dto -> new VizualizarProdutoDto(
+                            dto.getNome(),
+                            dto.getCategoria().name(),
+                            dto.getImagens(),
+                            dto.getValor(),
+                            dto.getEstoque()
+                    )
+            ).collect(Collectors.toList());
 
-        log.info("Lista de produtos tudo ok");
-        return ResponseEntity.ok(dados);
+            log.info("Lista de produtos tudo ok");
+            return ResponseEntity.ok(dados);
+        }catch (Exception e){
+            throw new ValorNaoEncontrado("Erro na metodo GET");
+        }
+
     }
 
     @Override
-    public ResponseEntity<HttpStatus> atualizarProduto(Long id, CadastraProdutoDto dto) {
-        return null;
+    public ResponseEntity<HttpStatus> atualizarProduto(Long id, AtualizarProdutoDto dto) {
+
+        Produto produtoReferenceById = produtoRepository.getReferenceById(id);
+
+        validacaoProdutos.forEach(v -> v.validarAtualizar(id,dto));
+
+        produtoReferenceById.setNome(dto.nome() == null? produtoReferenceById.getNome() : dto.nome());
+        produtoReferenceById.setCategoria(dto.categoria() == null? produtoReferenceById.getCategoria() : dto.categoria());
+        produtoReferenceById.setImagens(dto.imagens() == null? produtoReferenceById.getImagens() : dto.imagens());
+        produtoReferenceById.setValor(dto.valor() == null? produtoReferenceById.getValor(): dto.valor());
+        produtoReferenceById.setEstoque(dto.estoque() == null? produtoReferenceById.getEstoque(): dto.estoque());
+
+        produtoRepository.save(produtoReferenceById);
+        log.info("Informações do Produto atualizadas");
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override

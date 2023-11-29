@@ -27,11 +27,11 @@ public class ExecptionResponse {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {ChangeSetPersister.NotFoundException.class})
-    public List<ErroNotFound> ErroNotFound(ChangeSetPersister.NotFoundException exception){
+    @ExceptionHandler(value = {ChangeSetPersister.NotFoundException.class, ValorNaoEncontrado.class})
+    public List<ErroNotFound> ErroNotFound(ValorNaoEncontrado exception){
 
         List<ErroNotFound> list = new ArrayList<>();
-        exception.addSuppressed(new ErroNotFound(exception.getMessage(), exception.getCause()).cause()
+        list.add(new ErroNotFound(exception.getMessage(),exception.getCause())
         );
 
         return list;

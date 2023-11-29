@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.controller;
 
+import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.service.ProdutoServiceImpl;
 import jakarta.validation.Valid;
@@ -19,5 +20,10 @@ public class ProdutoController {
     @GetMapping
     public ResponseEntity<?> verProdutos(){
         return produtoService.vizualizarProdutoDto();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarProduto(@PathVariable Long id, @RequestBody AtualizarProdutoDto dto){
+        return produtoService.atualizarProduto(id,dto);
     }
 }

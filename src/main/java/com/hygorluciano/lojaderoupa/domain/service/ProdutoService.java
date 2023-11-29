@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.service;
 
+import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,6 @@ import java.util.List;
 public interface ProdutoService {
     ResponseEntity<HttpStatus> cadastraProduto(CadastraProdutoDto dto);
     ResponseEntity<List<VizualizarProdutoDto>> vizualizarProdutoDto();
-    ResponseEntity<HttpStatus> atualizarProduto(Long id,CadastraProdutoDto dto);
+    ResponseEntity<HttpStatus> atualizarProduto(Long id, AtualizarProdutoDto dto);
     ResponseEntity<HttpStatus> deletaProduto(Long id);
 }

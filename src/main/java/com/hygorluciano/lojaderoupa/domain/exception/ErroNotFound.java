@@ -4,4 +4,5 @@ public record ErroNotFound(
         String msg,
 
         Throwable cause) {
+
 }
