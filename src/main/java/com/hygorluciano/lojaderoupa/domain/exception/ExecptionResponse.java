@@ -14,9 +14,8 @@ import java.util.List;
 public class ExecptionResponse {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public List<ErrorHangle> handle(MethodArgumentNotValidException exception){
-        List<FieldError> fieldErrorlist =
-                Collections.singletonList(exception.getBindingResult().getFieldError());
+    public List<ErrorHangle> handle(MethodArgumentNotValidException exception) {
+        List<FieldError> fieldErrorlist = Collections.singletonList(exception.getBindingResult().getFieldError());
 
         List<ErrorHangle> list = new ArrayList<>();
         fieldErrorlist.forEach(erro -> {
@@ -28,21 +27,20 @@ public class ExecptionResponse {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {ChangeSetPersister.NotFoundException.class, ValorNaoEncontrado.class})
-    public List<ErroNotFound> ErroNotFound(ValorNaoEncontrado exception){
+    public List<ErroNotFound> ErroNotFound(ValorNaoEncontrado exception) {
 
         List<ErroNotFound> list = new ArrayList<>();
-        list.add(new ErroNotFound(exception.getMessage(),exception.getCause())
-        );
+        list.add(new ErroNotFound(exception.getMessage(), exception.getCause()));
 
         return list;
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(value = {ValorExisterExecption.class})
-    public List<ErrorHangle> valorExixter(ValorExisterExecption  existerExecption){
+    public List<ErrorHangle> valorExixter(ValorExisterExecption existerExecption) {
         List<ErrorHangle> list = new ArrayList<>();
 
-        list.add(new ErrorHangle(existerExecption.getMessage(),existerExecption.getLocalizedMessage()));
+        list.add(new ErrorHangle(existerExecption.getMessage(), existerExecption.getLocalizedMessage()));
 
         return list;
     }

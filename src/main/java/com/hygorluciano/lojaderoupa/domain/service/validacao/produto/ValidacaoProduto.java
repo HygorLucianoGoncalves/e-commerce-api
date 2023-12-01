@@ -8,4 +8,6 @@ public interface ValidacaoProduto {
     void validarNomeProduto(CadastraProdutoDto dto);
 
     void validarAtualizar(Long id,AtualizarProdutoDto dto);
+
+    boolean validarProdutoId(Long id);
 }

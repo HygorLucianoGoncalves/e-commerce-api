@@ -1,7 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.model;
 
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
-import com.hygorluciano.lojaderoupa.domain.model.enums.Categoria;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,10 +12,12 @@ import lombok.*;
 @Entity(name = "produto")
 @Table(name = "produto")
 public class Produto {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "categoria")
     private Categoria categoria;
     private String imagens;
     private Double valor;
@@ -24,7 +25,7 @@ public class Produto {
 
     public Produto(CadastraProdutoDto dto) {
         this.nome = dto.nome();
-        this.categoria = dto.categoria();
+        this.categoria = dto.categoria_id();
         this.imagens = dto.imagens();
         this.valor = dto.valor();
         this.estoque = dto.estoque();

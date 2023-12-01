@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class ValidarAtualizar implements ValidacaoProduto {
+public class ValidarAtualizarImpl implements ValidacaoProduto {
     @Autowired
     ProdutoRepository produtoRepository;
     @Override
@@ -25,5 +25,10 @@ public class ValidarAtualizar implements ValidacaoProduto {
         if (produtoid.isEmpty()){
             throw new ValorNaoEncontrado("Id do produto não existe");
         }
+    }
+
+    @Override
+    public boolean validarProdutoId(Long id) {
+        return false;
     }
 }

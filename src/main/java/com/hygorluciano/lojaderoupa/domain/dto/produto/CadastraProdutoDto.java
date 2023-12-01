@@ -1,13 +1,13 @@
 package com.hygorluciano.lojaderoupa.domain.dto.produto;
 
-import com.hygorluciano.lojaderoupa.domain.model.enums.Categoria;
+import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record CadastraProdutoDto(
         @NotEmpty(message = "Nome não pode esta em branco")
         String nome,
-        Categoria categoria,
+        Categoria categoria_id,
         String imagens,
         @NotNull(message = "Valot não pode esta vazio")
         Double valor,

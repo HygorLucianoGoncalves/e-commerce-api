@@ -1,8 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.dto.produto;
 
-import com.hygorluciano.lojaderoupa.domain.model.enums.Categoria;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 
 public record AtualizarProdutoDto(
         String nome,

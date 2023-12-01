@@ -22,11 +22,12 @@ import java.util.stream.Collectors;
 @Component
 @Transactional
 @Slf4j
-public class ProdutoServiceImpl implements ProdutoService{
+public class ProdutoServiceImpl implements ProdutoService {
     @Autowired
     ProdutoRepository produtoRepository;
     @Autowired
     List<ValidacaoProduto> validacaoProdutos;
+
     @Override
     public ResponseEntity<HttpStatus> cadastraProduto(CadastraProdutoDto dto) {
         validacaoProdutos.forEach(v -> v.validarNomeProduto(dto));
@@ -43,20 +44,18 @@ public class ProdutoServiceImpl implements ProdutoService{
     public ResponseEntity<List<VizualizarProdutoDto>> vizualizarProdutoDto() {
         try {
             List<Produto> todosOsProdutos = produtoRepository.findAll();
-
-            List<VizualizarProdutoDto> dados = todosOsProdutos.stream().map(
-                    dto -> new VizualizarProdutoDto(
-                            dto.getNome(),
-                            dto.getCategoria().name(),
-                            dto.getImagens(),
-                            dto.getValor(),
-                            dto.getEstoque()
-                    )
-            ).collect(Collectors.toList());
+            List<VizualizarProdutoDto> dados = todosOsProdutos.stream()
+                    .map(produto -> new VizualizarProdutoDto(
+                            produto.getNome(),
+                            produto.getCategoria().getNomeCategoria(),
+                            produto.getImagens(),
+                            produto.getValor(),
+                            produto.getEstoque()))
+                    .collect(Collectors.toList());
 
             log.info("Lista de produtos tudo ok");
             return ResponseEntity.ok(dados);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ValorNaoEncontrado("Erro na metodo GET");
         }
 
@@ -67,13 +66,13 @@ public class ProdutoServiceImpl implements ProdutoService{
 
         Produto produtoReferenceById = produtoRepository.getReferenceById(id);
 
-        validacaoProdutos.forEach(v -> v.validarAtualizar(id,dto));
+        validacaoProdutos.forEach(v -> v.validarAtualizar(id, dto));
 
-        produtoReferenceById.setNome(dto.nome() == null? produtoReferenceById.getNome() : dto.nome());
-        produtoReferenceById.setCategoria(dto.categoria() == null? produtoReferenceById.getCategoria() : dto.categoria());
-        produtoReferenceById.setImagens(dto.imagens() == null? produtoReferenceById.getImagens() : dto.imagens());
-        produtoReferenceById.setValor(dto.valor() == null? produtoReferenceById.getValor(): dto.valor());
-        produtoReferenceById.setEstoque(dto.estoque() == null? produtoReferenceById.getEstoque(): dto.estoque());
+        produtoReferenceById.setNome(dto.nome() == null ? produtoReferenceById.getNome() : dto.nome());
+        produtoReferenceById.setCategoria(dto.categoria() == null ? produtoReferenceById.getCategoria() : dto.categoria());
+        produtoReferenceById.setImagens(dto.imagens() == null ? produtoReferenceById.getImagens() : dto.imagens());
+        produtoReferenceById.setValor(dto.valor() == null ? produtoReferenceById.getValor() : dto.valor());
+        produtoReferenceById.setEstoque(dto.estoque() == null ? produtoReferenceById.getEstoque() : dto.estoque());
 
         produtoRepository.save(produtoReferenceById);
         log.info("Informações do Produto atualizadas");
@@ -83,6 +82,8 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public ResponseEntity<HttpStatus> deletaProduto(Long id) {
+
+
         return null;
     }
 }

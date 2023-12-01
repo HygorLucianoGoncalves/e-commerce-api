@@ -5,4 +5,4 @@ CREATE TABLE produto(
     imagens TEXT,
     valor DOUBLE PRECISION,
     estoque INT NOT NULL
-)
+);
