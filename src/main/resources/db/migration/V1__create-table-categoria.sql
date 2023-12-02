@@ -1,4 +1,4 @@
 CREATE TABLE categoria(
     id SERIAL primary key,
-    nomeCategoria TEXT not null unique
+    nome_categoria TEXT not null unique
 );

@@ -1,8 +1,13 @@
 CREATE TABLE produto(
     id SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL,
-    categoria TEXT NOT NULL,
+    nome TEXT NOT NULL ,
+    categoria_id INT,
     imagens TEXT,
     valor DOUBLE PRECISION,
-    estoque INT NOT NULL
+    estoque INT NOT NULL,
+    unique (nome),
+
+    foreign key (categoria_id) REFERENCES categoria(id)
+
+
 );

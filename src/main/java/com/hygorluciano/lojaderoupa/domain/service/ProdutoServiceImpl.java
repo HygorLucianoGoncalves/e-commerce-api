@@ -4,17 +4,17 @@ import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.exception.ValorNaoEncontrado;
+import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
+import com.hygorluciano.lojaderoupa.domain.repository.CategoriaRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.produto.ValidacaoProduto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,16 +26,19 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Autowired
     ProdutoRepository produtoRepository;
     @Autowired
-    List<ValidacaoProduto> validacaoProdutos;
+    CategoriaRepository categoriaRepository;
+    @Autowired
+    List<ValidacaoProduto> validacaos;
 
     @Override
     public ResponseEntity<HttpStatus> cadastraProduto(CadastraProdutoDto dto) {
-        validacaoProdutos.forEach(v -> v.validarNomeProduto(dto));
-        log.info("passou da validacao");
-
-        Produto novoProduto = new Produto(dto);
+        validacaos.forEach(validacao -> {
+            validacao.validarNomeProduto(dto.nome());
+            validacao.validarIdCategoria(dto.categoria_id());
+        });
+        Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
+        Produto novoProduto = new Produto(dto, categoria);
         produtoRepository.save(novoProduto);
-
         log.info("Produto cadastrado com sucesso");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -46,14 +49,15 @@ public class ProdutoServiceImpl implements ProdutoService {
             List<Produto> todosOsProdutos = produtoRepository.findAll();
             List<VizualizarProdutoDto> dados = todosOsProdutos.stream()
                     .map(produto -> new VizualizarProdutoDto(
+                            produto.getId(),
                             produto.getNome(),
-                            produto.getCategoria().getNomeCategoria(),
                             produto.getImagens(),
+                            produto.getCategoria().getNomeCategoria(),
                             produto.getValor(),
                             produto.getEstoque()))
                     .collect(Collectors.toList());
-
             log.info("Lista de produtos tudo ok");
+
             return ResponseEntity.ok(dados);
         } catch (Exception e) {
             throw new ValorNaoEncontrado("Erro na metodo GET");
@@ -63,13 +67,17 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public ResponseEntity<HttpStatus> atualizarProduto(Long id, AtualizarProdutoDto dto) {
+        validacaos.forEach(validacaoProduto -> {
+            validacaoProduto.validarId(id);
+            validacaoProduto.validarIdCategoria(dto.categoria_id());
+        });
 
         Produto produtoReferenceById = produtoRepository.getReferenceById(id);
+        Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
 
-        validacaoProdutos.forEach(v -> v.validarAtualizar(id, dto));
 
         produtoReferenceById.setNome(dto.nome() == null ? produtoReferenceById.getNome() : dto.nome());
-        produtoReferenceById.setCategoria(dto.categoria() == null ? produtoReferenceById.getCategoria() : dto.categoria());
+        produtoReferenceById.setCategoria(dto.categoria_id() == null ? produtoReferenceById.getCategoria() : categoria);
         produtoReferenceById.setImagens(dto.imagens() == null ? produtoReferenceById.getImagens() : dto.imagens());
         produtoReferenceById.setValor(dto.valor() == null ? produtoReferenceById.getValor() : dto.valor());
         produtoReferenceById.setEstoque(dto.estoque() == null ? produtoReferenceById.getEstoque() : dto.estoque());
@@ -82,8 +90,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public ResponseEntity<HttpStatus> deletaProduto(Long id) {
+        validacaos.forEach(d -> d.validarId(id));
 
+        produtoRepository.deleteById(id);
 
-        return null;
+        log.info(id + " :  Produto deletado com sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 }

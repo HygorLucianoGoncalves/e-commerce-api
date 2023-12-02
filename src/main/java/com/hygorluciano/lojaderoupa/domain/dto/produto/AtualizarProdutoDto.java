@@ -4,7 +4,7 @@ import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 
 public record AtualizarProdutoDto(
         String nome,
-        Categoria categoria,
+        Long categoria_id,
         String imagens,
         Double valor,
         Integer estoque

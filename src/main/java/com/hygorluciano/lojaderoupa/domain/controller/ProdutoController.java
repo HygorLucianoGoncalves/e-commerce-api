@@ -2,6 +2,9 @@ package com.hygorluciano.lojaderoupa.domain.controller;
 
 import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
+import com.hygorluciano.lojaderoupa.domain.service.CategoriaServiveImpl;
+import com.hygorluciano.lojaderoupa.domain.service.ProdutoService;
 import com.hygorluciano.lojaderoupa.domain.service.ProdutoServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("produto")
 public class ProdutoController {
     @Autowired
-    ProdutoServiceImpl produtoService;
+    ProdutoService produtoService;
     @PostMapping
     public ResponseEntity<?> cadastraProduto(@RequestBody @Valid CadastraProdutoDto dto){
        return produtoService.cadastraProduto(dto);

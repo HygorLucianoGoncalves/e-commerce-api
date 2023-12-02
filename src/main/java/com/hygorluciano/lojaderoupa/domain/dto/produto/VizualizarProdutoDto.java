@@ -1,6 +1,7 @@
 package com.hygorluciano.lojaderoupa.domain.dto.produto;
 
 public record VizualizarProdutoDto(
+        Long id,
         String nome,
         String imagens,
         String categoria,

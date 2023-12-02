@@ -1,13 +1,14 @@
 package com.hygorluciano.lojaderoupa.domain.service.validacao.produto;
 
-import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
-import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
+import org.springframework.stereotype.Service;
+
 
 public interface ValidacaoProduto {
 
-    void validarNomeProduto(CadastraProdutoDto dto);
+    void validarNomeProduto(String nome);
 
-    void validarAtualizar(Long id,AtualizarProdutoDto dto);
+    void validarId(Long id);
 
-    boolean validarProdutoId(Long id);
+    void validarIdCategoria(Long id);
+
 }
