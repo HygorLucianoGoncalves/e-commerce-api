@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.model;
 
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class Usuario {
 
     private String nome;
 
-    private String emial;
+    private String email;
 
     private String senha;
 
@@ -30,4 +31,10 @@ public class Usuario {
             orphanRemoval = true
     )
     private List<Pedido> pedidoList = new ArrayList<>();
+
+    public Usuario(CadastraUsuarioDto dto) {
+        this.nome = dto.nome();
+        this.email = dto.email();
+        this.senha = dto.senha();
+    }
 }
