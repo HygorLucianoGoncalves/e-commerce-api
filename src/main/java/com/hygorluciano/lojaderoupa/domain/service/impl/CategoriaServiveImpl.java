@@ -1,9 +1,10 @@
-package com.hygorluciano.lojaderoupa.domain.service;
+package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 import com.hygorluciano.lojaderoupa.domain.repository.CategoriaRepository;
+import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.categoria.ValidarCategoria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

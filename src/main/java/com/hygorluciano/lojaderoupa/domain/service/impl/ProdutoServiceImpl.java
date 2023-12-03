@@ -1,4 +1,4 @@
-package com.hygorluciano.lojaderoupa.domain.service;
+package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
@@ -8,6 +8,7 @@ import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.repository.CategoriaRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
+import com.hygorluciano.lojaderoupa.domain.service.ProdutoService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.produto.ValidacaoProduto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
