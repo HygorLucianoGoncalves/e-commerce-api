@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.controller;
 
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
@@ -27,4 +28,13 @@ public class UsuarioController {
         return usuarioService.verUsuario();
     };
 
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> atualizarUsuario(@PathVariable String id, @RequestBody @Valid AtualizadoUsuarioDto dados){
+        return usuarioService.atulizarUsuario(id,dados);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deletaUsuario(@PathVariable String id){
+        return usuarioService.deletaUsuario(id);
+    }
 }

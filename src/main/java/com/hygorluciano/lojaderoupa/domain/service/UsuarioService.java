@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.service;
 
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ public interface UsuarioService {
 
     ResponseEntity<List<VizualizarUsuarioDto>> verUsuario();
 
-    ResponseEntity<HttpStatus> atulizarUsuario(String id,VizualizarUsuarioDto dto);
+    ResponseEntity<HttpStatus> atulizarUsuario(String id, AtualizadoUsuarioDto dto);
 
     ResponseEntity<HttpStatus> deletaUsuario(String id);
 }

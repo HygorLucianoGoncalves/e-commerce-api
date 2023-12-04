@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
@@ -46,13 +47,32 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> atulizarUsuario(String id, VizualizarUsuarioDto dto) {
+    public ResponseEntity<HttpStatus> atulizarUsuario(String id, AtualizadoUsuarioDto dto) {
+        validacaoUsuarios.forEach( validacaoUsuario -> {
+            validacaoUsuario.veriificarEmail(dto.email());
+            validacaoUsuario.verificarId(id);
+        });
 
-        return null;
+        Usuario usuarioAtualizado = usuarioRepository.getReferenceById(id);
+
+        usuarioAtualizado.setNome(dto.nome() == null? usuarioAtualizado.getNome() : dto.nome());
+        usuarioAtualizado.setEmail(dto.email() == null? usuarioAtualizado.getEmail() : dto.email());
+        usuarioAtualizado.setSenha(dto.senha() == null ? usuarioAtualizado.getSenha() : dto.senha());
+
+        usuarioRepository.save(usuarioAtualizado);
+
+        log.info("Usuario atualizado");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
     public ResponseEntity<HttpStatus> deletaUsuario(String id) {
+//        validacaoUsuarios.forEach(validacaoUsuario -> validacaoUsuario.verificarId(id));
+// METODO ESTA COM ERRO
+//        usuarioRepository.deleteById(id);
+//
+////        log.info(id + "  Usuario deletado com sucesso");
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         return null;
     }
 }
