@@ -38,4 +38,7 @@ public class Pedido {
     )
     private List<DetalhesPedido> detalhesPedidoList = new ArrayList<>();
 
+    public Pedido(Usuario getUsusario) {
+        this.usuario = getUsusario;
+    }
 }
