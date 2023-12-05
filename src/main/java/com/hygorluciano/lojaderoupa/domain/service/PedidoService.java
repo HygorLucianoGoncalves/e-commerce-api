@@ -11,4 +11,6 @@ public interface PedidoService {
     ResponseEntity<HttpStatus> criaPedido(String id);
 
     ResponseEntity<List<VizualizarPedidosDto>> verPeidos();
+
+    ResponseEntity<HttpStatus> confirmarPedido(Long id);
 }

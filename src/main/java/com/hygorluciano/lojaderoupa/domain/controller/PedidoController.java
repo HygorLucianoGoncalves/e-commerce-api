@@ -19,5 +19,9 @@ public class PedidoController {
     public ResponseEntity<?> verPeididos(){
         return pedidoService.verPeidos();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> confirmaPedido(@PathVariable Long id){
+        return pedidoService.confirmarPedido(id);
+    }
 
 }
