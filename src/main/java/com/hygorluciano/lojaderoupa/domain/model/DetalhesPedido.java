@@ -16,11 +16,22 @@ public class DetalhesPedido {
 
     private Integer quantidade;
 
-    private Integer precoUnitario;
+    private Double precoUnitario;
 
-    private Long produto;
+    @OneToOne
+    @JoinColumn(name = "produto")
+    private Produto produto;
 
     @ManyToOne
     @JoinColumn(name = "pedido")
     private Pedido pedido;
+
+    public DetalhesPedido(Produto produto, Pedido pedido, Integer quantidade) {
+        this.produto = produto;
+        this.pedido = pedido;
+        this.precoUnitario = produto.getValor();
+        this.quantidade = quantidade;
+    }
+
+
 }

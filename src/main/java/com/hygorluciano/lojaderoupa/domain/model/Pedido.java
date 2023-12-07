@@ -23,6 +23,7 @@ public class Pedido {
 
     private LocalDateTime dataPedido = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
     private Status status = Status.AGUARDANDO_CONFIRMACAO;
 
     private double total;

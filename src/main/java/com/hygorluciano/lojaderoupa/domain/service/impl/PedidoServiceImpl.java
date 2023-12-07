@@ -4,9 +4,11 @@ import com.hygorluciano.lojaderoupa.domain.dto.Pedidos.VizualizarPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.model.DetalhesPedido;
 import com.hygorluciano.lojaderoupa.domain.model.Pedido;
+import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
 import com.hygorluciano.lojaderoupa.domain.model.enums.Status;
 import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
+import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.UsuarioRepository;
 import com.hygorluciano.lojaderoupa.domain.service.PedidoService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.pedidos.ValidarPedido;
@@ -27,6 +29,8 @@ public class PedidoServiceImpl implements PedidoService {
     PedidoRepository pedidoRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    ProdutoRepository produtoRepository;
     @Autowired
     List<ValidacaoUsuario> validarUsuarios;
     @Autowired
@@ -63,15 +67,20 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido pedido = pedidoRepository.getReferenceById(id);
 
+        validarPedidos.forEach(v -> v.validarStatus(pedido.getStatus()));
+
         var lista = pedido.getDetalhesPedidoList();
 
         double valorTotal = 0;
 
-        for (DetalhesPedido i : lista){
+        for (DetalhesPedido i : lista) {
+            Produto produto = i.getProduto();
+            int estoque = produto.getEstoque();
+            produto.setEstoque(estoque - i.getQuantidade());
             double valorQuantidade = i.getQuantidade() * i.getPrecoUnitario();
             valorTotal += valorQuantidade;
-        }
 
+        }
         pedido.setTotal(valorTotal);
         pedido.setStatus(Status.EM_PROCESSAMENTO);
         pedidoRepository.save(pedido);
