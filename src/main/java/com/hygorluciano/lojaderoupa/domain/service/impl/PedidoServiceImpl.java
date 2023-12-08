@@ -77,6 +77,7 @@ public class PedidoServiceImpl implements PedidoService {
             Produto produto = i.getProduto();
             int estoque = produto.getEstoque();
             produto.setEstoque(estoque - i.getQuantidade());
+
             double valorQuantidade = i.getQuantidade() * i.getPrecoUnitario();
             valorTotal += valorQuantidade;
 
@@ -88,6 +89,21 @@ public class PedidoServiceImpl implements PedidoService {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
     }
+
+    @Override
+    public ResponseEntity<HttpStatus> cancelarPediddo(Long id) {
+
+        validarPedidos.forEach(validarPedido -> validarPedido.validarid(id));
+
+        Pedido pedido = pedidoRepository.getReferenceById(id);
+
+        pedido.setStatus(Status.CANCELADO);
+
+        pedidoRepository.save(pedido);
+
+        return null;
+    }
+
 
     //fazer delete com status do pedido
 }

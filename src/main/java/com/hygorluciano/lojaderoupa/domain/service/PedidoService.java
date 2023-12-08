@@ -13,4 +13,6 @@ public interface PedidoService {
     ResponseEntity<List<VizualizarPedidosDto>> verPeidos();
 
     ResponseEntity<HttpStatus> confirmarPedido(Long id);
+
+    ResponseEntity<HttpStatus> cancelarPediddo(Long id);
 }
