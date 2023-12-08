@@ -1,6 +1,7 @@
 package com.hygorluciano.lojaderoupa.domain.service;
 
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
+import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaComListProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,12 @@ import java.util.List;
 public interface CategoriaService {
 
     ResponseEntity<HttpStatus> criaCategoria(CadastraCategoriaDto categoriaDto);
+
     ResponseEntity<List<VerCategoriaDto>> verCatetoria();
+
+    ResponseEntity<List<VerCategoriaComListProdutoDto>> varCategoriaComListProduto(Long id);
+
     ResponseEntity<HttpStatus> atualizarCategoria(Long id,CadastraCategoriaDto cadastraCategoriaDto);
+
     ResponseEntity<HttpStatus> deletaCategoria(Long id);
 }

@@ -22,6 +22,11 @@ public class CategoriaController{
     public ResponseEntity<?> verCategoria(){
         return categoriaService.verCatetoria();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> verCategoria(@PathVariable Long id){
+        return categoriaService.varCategoriaComListProduto(id);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> atulizarCategoria(@PathVariable Long id, @RequestBody @Valid CadastraCategoriaDto dto){
         return categoriaService.atualizarCategoria(id,dto);
