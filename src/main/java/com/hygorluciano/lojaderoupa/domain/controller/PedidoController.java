@@ -23,5 +23,9 @@ public class PedidoController {
     public ResponseEntity<?> confirmaPedido(@PathVariable Long id){
         return pedidoService.confirmarPedido(id);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancelarPedido(@PathVariable Long id){
+        return pedidoService.cancelarPediddo(id);
+    }
 
 }

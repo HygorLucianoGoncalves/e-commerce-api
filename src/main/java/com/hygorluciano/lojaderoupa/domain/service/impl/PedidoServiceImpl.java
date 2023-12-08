@@ -105,5 +105,4 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
 
-    //fazer delete com status do pedido
 }
