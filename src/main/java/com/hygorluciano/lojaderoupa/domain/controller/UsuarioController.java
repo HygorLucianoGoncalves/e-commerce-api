@@ -2,12 +2,11 @@ package com.hygorluciano.lojaderoupa.domain.controller;
 
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioComListPedidoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.model.Usuario;
 import com.hygorluciano.lojaderoupa.domain.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +27,10 @@ public class UsuarioController {
         return usuarioService.verUsuario();
     };
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<VizualizarUsuarioComListPedidoDto>> verUsuarioComListaPedido(@PathVariable String id){
+        return usuarioService.verUsuarioComListaPedidos(id);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> atualizarUsuario(@PathVariable String id, @RequestBody @Valid AtualizadoUsuarioDto dados){
         return usuarioService.atulizarUsuario(id,dados);

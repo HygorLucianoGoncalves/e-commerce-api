@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 
 public record VizualizarPedidosDto(
         Long id,
-        LocalDateTime localDateTime,
+        LocalDateTime data_do_pedido,
         Status status,
         Double total,
-        String nomeUsuario
+        String nome_usuario
 
 
 ) {
