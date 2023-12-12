@@ -1,4 +1,4 @@
-package com.hygorluciano.lojaderoupa.domain.dto.Pedidos;
+package com.hygorluciano.lojaderoupa.domain.dto.pedidos;
 
 import com.hygorluciano.lojaderoupa.domain.model.enums.Status;
 

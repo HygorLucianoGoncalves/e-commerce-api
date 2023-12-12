@@ -1,6 +1,5 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
-import com.hygorluciano.lojaderoupa.domain.dto.Pedidos.VizualizarPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaComListProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaDto;

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pedido")
 public class PedidoController {
@@ -18,6 +20,11 @@ public class PedidoController {
     @GetMapping
     public ResponseEntity<?> verPeididos(){
         return pedidoService.verPeidos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> verPedidoComListaItens(@PathVariable Long id){
+        return pedidoService.verPedidoComItens(id);
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> confirmaPedido(@PathVariable Long id){

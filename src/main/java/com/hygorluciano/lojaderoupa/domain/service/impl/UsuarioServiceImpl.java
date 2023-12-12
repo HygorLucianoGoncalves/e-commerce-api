@@ -1,19 +1,16 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
-import com.hygorluciano.lojaderoupa.domain.dto.Pedidos.VizualizarPedidosDto;
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioComListPedidoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.model.Pedido;
-import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
 import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.UsuarioRepository;
 import com.hygorluciano.lojaderoupa.domain.service.UsuarioService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.usuarios.ValidacaoUsuario;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.util.PartialOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

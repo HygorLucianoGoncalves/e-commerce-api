@@ -1,6 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.dto.usuario;
 
-import com.hygorluciano.lojaderoupa.domain.dto.Pedidos.VizualizarPedidosDto;
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
 
 import java.util.List;
 

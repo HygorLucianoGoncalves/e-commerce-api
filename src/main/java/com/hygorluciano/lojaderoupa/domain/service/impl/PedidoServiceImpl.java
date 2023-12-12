@@ -1,7 +1,8 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
-import com.hygorluciano.lojaderoupa.domain.dto.Pedidos.VizualizarPedidosDto;
-import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.dto.detalhespedido.VerDetalhesPedido;
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosComListItensDto;
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.model.DetalhesPedido;
 import com.hygorluciano.lojaderoupa.domain.model.Pedido;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
@@ -46,7 +47,7 @@ public class PedidoServiceImpl implements PedidoService {
         Pedido novoPedido = new Pedido(getUsusario);
 
         pedidoRepository.save(novoPedido);
-
+        log.info(novoPedido.getId() + ": Pedido criado com sucesso ");
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
@@ -61,6 +62,35 @@ public class PedidoServiceImpl implements PedidoService {
                         pedido.getTotal(),
                         pedido.getUsuario().getNome()
                 )).collect(Collectors.toList()));
+    }
+
+    @Override
+    public ResponseEntity<List<VizualizarPedidosComListItensDto>> verPedidoComItens(Long id) {
+        validarPedidos.forEach( validar -> validar.validarid(id));
+
+        Pedido pedido = pedidoRepository.getReferenceById(id);
+
+        List<VerDetalhesPedido> listItens = pedido.getDetalhesPedidoList().stream()
+                .map(detalhesPedido -> new VerDetalhesPedido(
+                        detalhesPedido.getId(),
+                        detalhesPedido.getQuantidade(),
+                        detalhesPedido.getPrecoUnitario(),
+                        detalhesPedido.getProduto().getNome(),
+                        detalhesPedido.getPedido().getId()
+                )).toList();
+
+        List<VizualizarPedidosComListItensDto> dtos = List.of(
+                new VizualizarPedidosComListItensDto(
+                        pedido.getId(),
+                        pedido.getDataPedido(),
+                        pedido.getStatus(),
+                        pedido.getTotal(),
+                        pedido.getUsuario().getNome(),
+                        listItens
+                )
+        );
+
+        return ResponseEntity.ok(dtos);
     }
 
     @Override
@@ -88,6 +118,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setStatus(Status.EM_PROCESSAMENTO);
         pedidoRepository.save(pedido);
 
+        log.info("Pedido confirmado com sucesso");
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
     }
@@ -102,8 +133,9 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setStatus(Status.CANCELADO);
 
         pedidoRepository.save(pedido);
+        log.info("Pedido cancelado com sucesso");
 
-        return null;
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
