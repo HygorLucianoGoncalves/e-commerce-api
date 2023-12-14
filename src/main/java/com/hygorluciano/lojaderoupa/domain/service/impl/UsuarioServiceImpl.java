@@ -18,22 +18,30 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Component
 @Slf4j
 @Transactional
 public class UsuarioServiceImpl implements UsuarioService {
-    @Autowired
+    final
     UsuarioRepository usuarioRepository;
-    @Autowired
+    final
     PedidoRepository pedidoRepository;
-    @Autowired
+    final
     List<ValidacaoUsuario> validacaoUsuarios;
+
+    @Autowired
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PedidoRepository pedidoRepository, List<ValidacaoUsuario> validacaoUsuarios) {
+        this.usuarioRepository = usuarioRepository;
+        this.pedidoRepository = pedidoRepository;
+        this.validacaoUsuarios = validacaoUsuarios;
+    }
 
     @Override
     public ResponseEntity<HttpStatus> criandoUsuario(CadastraUsuarioDto dto) {
-        validacaoUsuarios.forEach(validacaoUsuario -> {
+        for (ValidacaoUsuario validacaoUsuario : validacaoUsuarios) {
             validacaoUsuario.veriificarEmail(dto.email());
-        });
+        }
         Usuario novoUsuario = new Usuario(dto);
 
         usuarioRepository.save(novoUsuario);
@@ -56,40 +64,40 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public ResponseEntity<List<VizualizarUsuarioComListPedidoDto>> verUsuarioComListaPedidos(String id_usuario) {
         validacaoUsuarios.forEach(v -> v.verificarId(id_usuario));
-         Usuario usuario = usuarioRepository.getReferenceById(id_usuario);
+        Usuario usuario = usuarioRepository.getReferenceById(id_usuario);
 
-         List<VizualizarPedidosDto> listPedidoDtos = usuario.getPedidoList().stream()
-                 .map(pedido -> new VizualizarPedidosDto(
-                         pedido.getId(),
-                         pedido.getDataPedido(),
-                         pedido.getStatus(),
-                         pedido.getTotal(),
-                         pedido.getUsuario().getNome()
-                 )).toList();
+        List<VizualizarPedidosDto> listPedidoDtos = usuario.getPedidoList().stream()
+                .map(pedido -> new VizualizarPedidosDto(
+                        pedido.getId(),
+                        pedido.getDataPedido(),
+                        pedido.getStatus(),
+                        pedido.getTotal(),
+                        pedido.getUsuario().getNome()
+                )).toList();
 
-         List<VizualizarUsuarioComListPedidoDto> dtos = List.of(
-                 new VizualizarUsuarioComListPedidoDto(
-                         usuario.getId(),
-                         usuario.getNome(),
-                         usuario.getEmail(),
-                         listPedidoDtos
-                 )
-         );
+        List<VizualizarUsuarioComListPedidoDto> dtos = List.of(
+                new VizualizarUsuarioComListPedidoDto(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getEmail(),
+                        listPedidoDtos
+                )
+        );
 
-         return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(dtos);
     }
 
     @Override
     public ResponseEntity<HttpStatus> atulizarUsuario(String id, AtualizadoUsuarioDto dto) {
-        validacaoUsuarios.forEach( validacaoUsuario -> {
+        validacaoUsuarios.forEach(validacaoUsuario -> {
             validacaoUsuario.veriificarEmail(dto.email());
             validacaoUsuario.verificarId(id);
         });
 
         Usuario usuarioAtualizado = usuarioRepository.getReferenceById(id);
 
-        usuarioAtualizado.setNome(dto.nome() == null? usuarioAtualizado.getNome() : dto.nome());
-        usuarioAtualizado.setEmail(dto.email() == null? usuarioAtualizado.getEmail() : dto.email());
+        usuarioAtualizado.setNome(dto.nome() == null ? usuarioAtualizado.getNome() : dto.nome());
+        usuarioAtualizado.setEmail(dto.email() == null ? usuarioAtualizado.getEmail() : dto.email());
         usuarioAtualizado.setSenha(dto.senha() == null ? usuarioAtualizado.getSenha() : dto.senha());
 
         usuarioRepository.save(usuarioAtualizado);

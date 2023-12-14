@@ -22,11 +22,17 @@ import java.util.List;
 @Transactional
 public class CategoriaServiveImpl implements CategoriaService {
 
-    @Autowired
+    final
     CategoriaRepository categoriaRepository;
 
-    @Autowired
+    final
     List<ValidarCategoria> validarCategorias;
+
+    @Autowired
+    public CategoriaServiveImpl(CategoriaRepository categoriaRepository, List<ValidarCategoria> validarCategorias) {
+        this.categoriaRepository = categoriaRepository;
+        this.validarCategorias = validarCategorias;
+    }
 
 
     @Override
@@ -37,7 +43,7 @@ public class CategoriaServiveImpl implements CategoriaService {
 
         categoriaRepository.save(novaCategoria);
 
-        log.info("Categoria registrada com sucesso " +"NOME CATEGORIA: " + novaCategoria.getNomeCategoria());
+        log.info("Categoria registrada com sucesso " + "NOME CATEGORIA: " + novaCategoria.getNomeCategoria());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -76,7 +82,7 @@ public class CategoriaServiveImpl implements CategoriaService {
                         listPedido
                 ));
         log.info("Categoria com list de produtos Visualizado com sucesso");
-       return ResponseEntity.ok(dtoList);
+        return ResponseEntity.ok(dtoList);
 
     }
 

@@ -1,7 +1,8 @@
-CREATE TABLE detalhes_pedido (
+CREATE TABLE itens_pedidos (
                                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                                 quantidade INT,
                                 preco_unitario double precision,
+                                sub_total double precision,
                                 produto INT,
                                 pedido INT,
 

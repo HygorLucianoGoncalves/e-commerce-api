@@ -37,7 +37,7 @@ public class Pedido {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<DetalhesPedido> detalhesPedidoList = new ArrayList<>();
+    private List<ItensPedidos> itensPedidosList = new ArrayList<>();
 
     public Pedido(Usuario getUsusario) {
         this.usuario = getUsusario;

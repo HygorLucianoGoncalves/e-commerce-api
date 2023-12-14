@@ -1,4 +1,4 @@
-package com.hygorluciano.lojaderoupa.domain.dto.detalhespedido;
+package com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos;
 
 import jakarta.validation.constraints.NotNull;
 

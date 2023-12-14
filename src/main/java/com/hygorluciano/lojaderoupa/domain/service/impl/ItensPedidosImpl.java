@@ -1,0 +1,55 @@
+package com.hygorluciano.lojaderoupa.domain.service.impl;
+
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AddProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.model.Pedido;
+import com.hygorluciano.lojaderoupa.domain.model.Produto;
+import com.hygorluciano.lojaderoupa.domain.repository.ItensPedidosRepository;
+import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
+import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
+import com.hygorluciano.lojaderoupa.domain.service.ItensPedidosService;
+import com.hygorluciano.lojaderoupa.domain.service.validacao.ItensPedidos.ValidarItensPedidos;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Component
+@Slf4j
+@Transactional
+public class ItensPedidosImpl implements ItensPedidosService {
+    final
+    PedidoRepository pedidoRepository;
+    final
+    ProdutoRepository produtoRepository;
+    final
+    ItensPedidosRepository itensPedidosRepository;
+    final
+    List<ValidarItensPedidos> validarItensPedidosList;
+
+    @Autowired
+    public ItensPedidosImpl(PedidoRepository pedidoRepository, ProdutoRepository produtoRepository, ItensPedidosRepository itensPedidosRepository, List<ValidarItensPedidos> validarItensPedidosList) {
+        this.pedidoRepository = pedidoRepository;
+        this.produtoRepository = produtoRepository;
+        this.itensPedidosRepository = itensPedidosRepository;
+        this.validarItensPedidosList = validarItensPedidosList;
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> addProduto(AddProdutoDto dto) {
+        validarItensPedidosList.forEach(validar -> validar.validarId(dto.idProduto(), dto.idPedido()));
+
+        Produto produto = produtoRepository.getReferenceById(dto.idProduto());
+        Pedido pedido = pedidoRepository.getReferenceById(dto.idPedido());
+
+        com.hygorluciano.lojaderoupa.domain.model.ItensPedidos novoItens = new com.hygorluciano.lojaderoupa.domain.model.ItensPedidos(produto, pedido, dto.quantidade());
+
+        itensPedidosRepository.save(novoItens);
+
+        log.info("Produto add com sucesso no Detalhes Pedidos");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+}

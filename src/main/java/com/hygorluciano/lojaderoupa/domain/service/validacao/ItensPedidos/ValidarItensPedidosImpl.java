@@ -1,4 +1,4 @@
-package com.hygorluciano.lojaderoupa.domain.service.validacao.detalhespedidos;
+package com.hygorluciano.lojaderoupa.domain.service.validacao.ItensPedidos;
 
 import com.hygorluciano.lojaderoupa.domain.exception.ValorNaoEncontrado;
 import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ValidarDetalhesPedidosImpl  implements ValidarDetalhesPedidos{
+public class ValidarItensPedidosImpl implements ValidarItensPedidos {
     @Autowired
     ProdutoRepository produtoRepository;
     @Autowired
@@ -20,7 +20,7 @@ public class ValidarDetalhesPedidosImpl  implements ValidarDetalhesPedidos{
         boolean idV = produtoRepository.existsById(idProduto);
         boolean id2 = pedidoRepository.existsById(idPedido);
 
-        if (!idV && !id2){
+        if (!idV || !id2){
             throw new ValorNaoEncontrado("Id informado não existe");
         }
     }

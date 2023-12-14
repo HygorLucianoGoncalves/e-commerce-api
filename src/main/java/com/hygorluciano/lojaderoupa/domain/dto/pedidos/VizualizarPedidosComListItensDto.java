@@ -1,6 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.dto.pedidos;
 
-import com.hygorluciano.lojaderoupa.domain.dto.detalhespedido.VerDetalhesPedido;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
@@ -13,6 +13,6 @@ public record VizualizarPedidosComListItensDto(
         Status status,
         double valor,
         String nome_do_usuario,
-        List<VerDetalhesPedido> lista_itens
+        List<GetItensPedidos> lista_itens
 ) {
 }

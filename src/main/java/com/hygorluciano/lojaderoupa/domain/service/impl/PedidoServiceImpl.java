@@ -1,9 +1,9 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
-import com.hygorluciano.lojaderoupa.domain.dto.detalhespedido.VerDetalhesPedido;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosComListItensDto;
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
-import com.hygorluciano.lojaderoupa.domain.model.DetalhesPedido;
+import com.hygorluciano.lojaderoupa.domain.model.ItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.model.Pedido;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
@@ -28,16 +28,25 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class PedidoServiceImpl implements PedidoService {
-    @Autowired
+    final
     PedidoRepository pedidoRepository;
-    @Autowired
+    final
     UsuarioRepository usuarioRepository;
-    @Autowired
+    final
     ProdutoRepository produtoRepository;
-    @Autowired
+    final
     List<ValidacaoUsuario> validarUsuarios;
-    @Autowired
+    final
     List<ValidarPedido> validarPedidos;
+
+    @Autowired
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, ProdutoRepository produtoRepository, List<ValidacaoUsuario> validarUsuarios, List<ValidarPedido> validarPedidos) {
+        this.pedidoRepository = pedidoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.produtoRepository = produtoRepository;
+        this.validarUsuarios = validarUsuarios;
+        this.validarPedidos = validarPedidos;
+    }
 
     @Override
     public ResponseEntity<HttpStatus> criaPedido(String id) {
@@ -66,17 +75,18 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public ResponseEntity<List<VizualizarPedidosComListItensDto>> verPedidoComItens(Long id) {
-        validarPedidos.forEach( validar -> validar.validarid(id));
+        validarPedidos.forEach(validar -> validar.validarid(id));
 
         Pedido pedido = pedidoRepository.getReferenceById(id);
 
-        List<VerDetalhesPedido> listItens = pedido.getDetalhesPedidoList().stream()
-                .map(detalhesPedido -> new VerDetalhesPedido(
+        List<GetItensPedidos> listItens = pedido.getItensPedidosList().stream()
+                .map(detalhesPedido -> new GetItensPedidos(
                         detalhesPedido.getId(),
-                        detalhesPedido.getQuantidade(),
-                        detalhesPedido.getPrecoUnitario(),
+                        detalhesPedido.getPedido().getId(),
                         detalhesPedido.getProduto().getNome(),
-                        detalhesPedido.getPedido().getId()
+                        detalhesPedido.getPrecoUnitario(),
+                        detalhesPedido.getSubTotal(),
+                        detalhesPedido.getQuantidade()
                 )).toList();
 
         List<VizualizarPedidosComListItensDto> dtos = List.of(
@@ -101,11 +111,11 @@ public class PedidoServiceImpl implements PedidoService {
 
         validarPedidos.forEach(v -> v.validarStatus(pedido.getStatus()));
 
-        var lista = pedido.getDetalhesPedidoList();
+        var lista = pedido.getItensPedidosList();
 
         double valorTotal = 0;
 
-        for (DetalhesPedido i : lista) {
+        for (ItensPedidos i : lista) {
             Produto produto = i.getProduto();
             int estoque = produto.getEstoque();
             produto.setEstoque(estoque - i.getQuantidade());

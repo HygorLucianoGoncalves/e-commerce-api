@@ -24,12 +24,19 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class ProdutoServiceImpl implements ProdutoService {
-    @Autowired
+    final
     ProdutoRepository produtoRepository;
-    @Autowired
+    final
     CategoriaRepository categoriaRepository;
-    @Autowired
+    final
     List<ValidacaoProduto> validacaos;
+
+    @Autowired
+    public ProdutoServiceImpl(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository, List<ValidacaoProduto> validacaos) {
+        this.produtoRepository = produtoRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.validacaos = validacaos;
+    }
 
     @Override
     public ResponseEntity<HttpStatus> cadastraProduto(CadastraProdutoDto dto) {
