@@ -10,12 +10,14 @@ import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.categoria.ValidarCategoria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -49,13 +51,13 @@ public class CategoriaServiveImpl implements CategoriaService {
     }
 
     @Override
-    public ResponseEntity<List<VerCategoriaDto>> verCatetoria() {
+    public ResponseEntity<List<VerCategoriaDto>> verCatetoria(Pageable pageable) {
         log.info("Categoria Visualizado com Sucesso");
-        return ResponseEntity.ok(categoriaRepository.findAll().stream()
+        return ResponseEntity.ok(categoriaRepository.findAll(pageable).stream()
                 .map(categoria1 -> new VerCategoriaDto(
                         categoria1.getId(),
                         categoria1.getNomeCategoria()
-                )).toList());
+                )).collect(Collectors.toList()));
 
     }
 

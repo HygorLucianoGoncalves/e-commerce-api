@@ -1,4 +1,4 @@
 CREATE TABLE categoria(
-    id SERIAL primary key,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome_categoria TEXT not null unique
 );

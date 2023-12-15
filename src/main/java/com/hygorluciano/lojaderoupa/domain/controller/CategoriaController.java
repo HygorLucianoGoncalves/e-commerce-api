@@ -4,6 +4,7 @@ import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class CategoriaController{
         return categoriaService.criaCategoria(cadastraCategoriaDto);
     }
     @GetMapping
-    public ResponseEntity<?> verCategoria(){
-        return categoriaService.verCatetoria();
+    public ResponseEntity<?> verCategoria(Pageable pageable){
+        return categoriaService.verCatetoria(pageable);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> verCategoria(@PathVariable Long id){

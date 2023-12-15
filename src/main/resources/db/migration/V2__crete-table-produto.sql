@@ -1,5 +1,5 @@
 CREATE TABLE produto(
-    id SERIAL PRIMARY KEY,
+    id INT PRIMARY KEY,
     nome TEXT NOT NULL ,
     categoria_id INT,
     imagens TEXT,
