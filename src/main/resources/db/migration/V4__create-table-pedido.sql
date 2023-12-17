@@ -1,9 +1,9 @@
 CREATE TABLE pedido(
-    id serial primary key,
+    id SERIAL primary key,
     data_pedido DATE,
-    status text,
+    status TEXT,
     total double precision,
-    usuario text,
+    usuario TEXT,
 
     foreign key (usuario) references usuario(id)
 );

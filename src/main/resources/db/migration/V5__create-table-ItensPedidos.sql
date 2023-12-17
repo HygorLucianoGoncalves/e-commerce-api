@@ -1,5 +1,5 @@
 CREATE TABLE itens_pedidos (
-                                id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                id SERIAL PRIMARY KEY,
                                 quantidade INT,
                                 preco_unitario double precision,
                                 sub_total double precision,
