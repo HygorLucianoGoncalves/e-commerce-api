@@ -1,6 +1,7 @@
 package com.hygorluciano.lojaderoupa.domain.controller;
 
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AddProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AtualizarItensPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.service.ItensPedidosService;
 import jakarta.validation.Valid;
@@ -25,6 +26,11 @@ public class ItensPedidosController {
     @GetMapping
     public ResponseEntity<List<GetItensPedidos>> verItensPedidos(){
         return itensPedidosService.verItensPedido();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarQuantidade(@PathVariable Long id, @RequestBody AtualizarItensPedidosDto dto){
+        return itensPedidosService.atualizarQuantidadeItensPedidos(id,dto);
     }
 
 }

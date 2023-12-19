@@ -11,6 +11,7 @@ import com.hygorluciano.lojaderoupa.domain.service.validacao.categoria.ValidarCa
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -47,19 +48,28 @@ public class CategoriaServiveImpl implements CategoriaService {
 
         log.info("Categoria registrada com sucesso " + "NOME CATEGORIA: " + novaCategoria.getNomeCategoria());
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
 
     @Override
-    public ResponseEntity<List<VerCategoriaDto>> verCatetoria(Pageable pageable) {
+    public ResponseEntity<?> verCatetoria(Pageable pageable) {
         log.info("Categoria Visualizado com Sucesso");
-        return ResponseEntity.ok(categoriaRepository.findAll(pageable).stream()
-                .map(categoria1 -> new VerCategoriaDto(
-                        categoria1.getId(),
-                        categoria1.getNomeCategoria()
-                )).collect(Collectors.toList()));
+
+        var tudoteste = categoriaRepository.findAll(pageable);
+        
+
+//        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
+////                .map(categoria1 -> new VerCategoriaDto(
+////                        categoria1.getId(),
+////                        categoria1.getNomeCategoria()
+////                )).collect(Collectors.toList());
+
+        return ResponseEntity.ok(tudoteste);
 
     }
+
 
     @Override
     public ResponseEntity<List<VerCategoriaComListProdutoDto>> varCategoriaComListProduto(Long id) {
@@ -90,17 +100,21 @@ public class CategoriaServiveImpl implements CategoriaService {
 
     @Override
     public ResponseEntity<HttpStatus> atualizarCategoria(Long id, CadastraCategoriaDto cadastraCategoriaDto) {
-        validarCategorias.forEach(validarCategoria1 -> {
-            validarCategoria1.validarNome(cadastraCategoriaDto.nome());
-            validarCategoria1.validarId(id);
-        });
 
-        Categoria categoria = categoriaRepository.getReferenceById(id);
+            validarCategorias.forEach(validarCategoria1 -> {
+                validarCategoria1.validarNome(cadastraCategoriaDto.nome());
+                validarCategoria1.validarId(id);
+            });
 
-        categoria.setNomeCategoria(cadastraCategoriaDto.nome() == null ? categoria.getNomeCategoria() : cadastraCategoriaDto.nome());
-        categoriaRepository.save(categoria);
-        log.info("Atualização na categoria, feita com sucesso");
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+            Categoria categoria = categoriaRepository.getReferenceById(id);
+
+            categoria.setNomeCategoria(cadastraCategoriaDto.nome() == null ? categoria.getNomeCategoria() : cadastraCategoriaDto.nome());
+
+            categoriaRepository.save(categoria);
+
+            log.info("Atualizando categoria com ID {}", id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+
     }
 
     @Override

@@ -18,8 +18,9 @@ public class ExecptionResponse {
         List<FieldError> fieldErrorlist = Collections.singletonList(exception.getBindingResult().getFieldError());
 
         List<ErrorHangle> list = new ArrayList<>();
+
         fieldErrorlist.forEach(erro -> {
-            list.add(new ErrorHangle(erro.getField(), erro.getDefaultMessage()));
+            list.add(new ErrorHangle(erro.getDefaultMessage()));
         });
 
         return list;
@@ -30,7 +31,7 @@ public class ExecptionResponse {
     public List<ErroNotFound> ErroNotFound(ValorNaoEncontrado exception) {
 
         List<ErroNotFound> list = new ArrayList<>();
-        list.add(new ErroNotFound(exception.getMessage(), exception.getCause()));
+        list.add(new ErroNotFound(exception.getMessage()));
 
         return list;
     }
@@ -40,7 +41,7 @@ public class ExecptionResponse {
     public List<ErrorHangle> valorExixter(ValorExisterExecption existerExecption) {
         List<ErrorHangle> list = new ArrayList<>();
 
-        list.add(new ErrorHangle(existerExecption.getMessage(), existerExecption.getLocalizedMessage()));
+        list.add(new ErrorHangle(existerExecption.getMessage()));
 
         return list;
     }

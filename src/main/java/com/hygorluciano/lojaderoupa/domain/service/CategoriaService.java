@@ -14,7 +14,7 @@ public interface CategoriaService {
 
     ResponseEntity<HttpStatus> criaCategoria(CadastraCategoriaDto categoriaDto);
 
-    ResponseEntity<List<VerCategoriaDto>> verCatetoria(Pageable pageable);
+    ResponseEntity<?> verCatetoria(Pageable pageable);
 
     ResponseEntity<List<VerCategoriaComListProdutoDto>> varCategoriaComListProduto(Long id);
 

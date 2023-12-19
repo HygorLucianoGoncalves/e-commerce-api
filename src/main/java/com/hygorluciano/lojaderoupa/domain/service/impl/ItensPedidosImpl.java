@@ -1,7 +1,9 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AddProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AtualizarItensPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
+import com.hygorluciano.lojaderoupa.domain.model.ItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.model.Pedido;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
 import com.hygorluciano.lojaderoupa.domain.repository.ItensPedidosRepository;
@@ -69,5 +71,21 @@ public class ItensPedidosImpl implements ItensPedidosService {
         log.info("Get ItensPedidos vou aberto ");
 
         return ResponseEntity.ok(itensPedidos);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> atualizarQuantidadeItensPedidos(Long idItensPedido, AtualizarItensPedidosDto dto) {
+        validarItensPedidosList.forEach(v -> v.validarIdItens(idItensPedido));
+
+        ItensPedidos itensPedidos = itensPedidosRepository.getReferenceById(idItensPedido);
+
+        itensPedidos.setQuantidade(dto.quantidade() == null ? itensPedidos.getQuantidade() : dto.quantidade());
+        itensPedidos.setSubTotal(itensPedidos.getQuantidade() * itensPedidos.getPrecoUnitario());
+
+        itensPedidosRepository.save(itensPedidos);
+
+        log.info("Atualizado a quantidade do Itens Com ID {}",idItensPedido);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }

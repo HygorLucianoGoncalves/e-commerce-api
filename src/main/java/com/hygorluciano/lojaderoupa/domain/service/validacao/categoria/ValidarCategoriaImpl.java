@@ -31,7 +31,7 @@ public class ValidarCategoriaImpl implements ValidarCategoria{
     public void validarId(Long id) {
         boolean testeId = categoriaRepository.existsById(id);
         if (!testeId){
-            throw new ValorNaoEncontrado(id + ": Id categoria não encontrado");
+            throw new ValorNaoEncontrado("ID CATEORIA NÂO ENCONTRADO ID: { " +id+ " }");
         }
 
     }
