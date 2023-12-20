@@ -33,4 +33,8 @@ public class ItensPedidosController {
         return itensPedidosService.atualizarQuantidadeItensPedidos(id,dto);
     }
 
+    @DeleteMapping("/{idItensPedido}")
+    public ResponseEntity<?> deleteItensPedidos(@PathVariable Long idItensPedido){
+        return itensPedidosService.deleteItensPedido(idItensPedido);
+    }
 }
