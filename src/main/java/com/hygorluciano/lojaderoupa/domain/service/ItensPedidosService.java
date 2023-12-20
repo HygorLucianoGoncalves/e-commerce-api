@@ -13,5 +13,8 @@ public interface ItensPedidosService {
 
     ResponseEntity<List<GetItensPedidos>> verItensPedido();
 
-    public ResponseEntity<HttpStatus> atualizarQuantidadeItensPedidos(Long idItensPedido, AtualizarItensPedidosDto dto);
+    ResponseEntity<HttpStatus> atualizarQuantidadeItensPedidos(Long idItensPedido, AtualizarItensPedidosDto dto);
+
+    ResponseEntity<HttpStatus> deleteItensPedido(Long idItensPedidos);
+
 }
