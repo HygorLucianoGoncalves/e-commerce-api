@@ -88,4 +88,15 @@ public class ItensPedidosImpl implements ItensPedidosService {
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
+
+    @Override
+    public ResponseEntity<HttpStatus> deleteItensPedido(Long idItensPedidos) {
+        validarItensPedidosList.forEach(v -> v.validarIdItens(idItensPedidos));
+
+        itensPedidosRepository.deleteById(idItensPedidos);
+
+        log.info("Itens Pedidos deletados com sucesso.  id do itens {}", idItensPedidos);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
