@@ -1,6 +1,6 @@
 CREATE TABLE produto(
     id SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL ,
+    nome VARCHAR(255) NOT NULL ,
     categoria_id INT,
     imagens TEXT,
     valor DOUBLE PRECISION,

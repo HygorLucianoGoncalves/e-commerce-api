@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,7 @@ public class PedidoServiceImpl implements PedidoService {
         Pedido novoPedido = new Pedido(getUsusario);
 
         pedidoRepository.save(novoPedido);
+
         log.info(novoPedido.getId() + ": Pedido criado com sucesso ");
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
@@ -63,6 +65,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public ResponseEntity<List<VizualizarPedidosDto>> verPeidos() {
+
         return ResponseEntity.ok(pedidoRepository.findAll().stream()
                 .map(pedido -> new VizualizarPedidosDto(
                         pedido.getId(),

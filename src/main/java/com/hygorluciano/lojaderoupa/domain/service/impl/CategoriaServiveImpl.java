@@ -58,13 +58,13 @@ public class CategoriaServiveImpl implements CategoriaService {
         log.info("Categoria Visualizado com Sucesso");
 
         var tudoteste = categoriaRepository.findAll(pageable);
-        
 
-//        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
-////                .map(categoria1 -> new VerCategoriaDto(
-////                        categoria1.getId(),
-////                        categoria1.getNomeCategoria()
-////                )).collect(Collectors.toList());
+
+        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
+                .map(categoria1 -> new VerCategoriaDto(
+                        categoria1.getId(),
+                        categoria1.getNomeCategoria()
+                )).toList();
 
         return ResponseEntity.ok(tudoteste);
 

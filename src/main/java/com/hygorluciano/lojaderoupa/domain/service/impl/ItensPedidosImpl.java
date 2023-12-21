@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.util.List;
 
 @Component
@@ -68,7 +69,7 @@ public class ItensPedidosImpl implements ItensPedidosService {
                         itensPedidos1.getQuantidade()
                 )).toList();
 
-        log.info("Get ItensPedidos vou aberto ");
+        log.info("Get ItensPedidos foi aberto ");
 
         return ResponseEntity.ok(itensPedidos);
     }

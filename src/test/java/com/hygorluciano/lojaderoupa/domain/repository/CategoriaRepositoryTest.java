@@ -29,6 +29,7 @@ class CategoriaRepositoryTest {
     void existsByNomeCategoria() {
 
         String nomeCategoria = "Roupas";
+
         // given
         Categoria categoria = new Categoria(
                 null,

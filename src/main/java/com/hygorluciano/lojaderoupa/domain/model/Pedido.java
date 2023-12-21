@@ -1,10 +1,12 @@
 package com.hygorluciano.lojaderoupa.domain.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hygorluciano.lojaderoupa.domain.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dataPedido = LocalDateTime.now();
+    private LocalDate dataPedido = LocalDate.now();
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.AGUARDANDO_CONFIRMACAO;
