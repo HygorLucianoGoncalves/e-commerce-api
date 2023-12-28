@@ -23,6 +23,7 @@ public class CategoriaController{
     public ResponseEntity<?> verCategoria(Pageable pageable){
         return categoriaService.verCatetoria(pageable);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> verCategoria(@PathVariable Long id){
         return categoriaService.varCategoriaComListProduto(id);
