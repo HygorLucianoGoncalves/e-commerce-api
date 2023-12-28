@@ -1,5 +1,5 @@
 CREATE TABLE pedido(
-    id INT PRIMARY KEY ,
+    id SERIAL PRIMARY KEY ,
     data_pedido TIMESTAMP,
     status TEXT,
     total double precision,
