@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
 
         var token = tokenService.geraToken((Usuario) auth.getPrincipal());
 
-        log.info(auth.getName() ,"Login efetuado com sucesso");
+        log.info(auth.getName() + "  Login efetuado com sucesso");
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
 }
