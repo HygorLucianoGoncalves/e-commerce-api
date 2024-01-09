@@ -1,6 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.exception;
 
-public record ErrorHangle(
+public record ErrorHangle (
         String message
 ) {
 }

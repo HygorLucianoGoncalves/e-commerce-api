@@ -16,23 +16,18 @@ public class ExecptionResponse {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public List<ErrorHangle> handle(MethodArgumentNotValidException exception) {
         List<FieldError> fieldErrorlist = Collections.singletonList(exception.getBindingResult().getFieldError());
-
         List<ErrorHangle> list = new ArrayList<>();
-
         fieldErrorlist.forEach(erro -> {
             list.add(new ErrorHangle(erro.getDefaultMessage()));
         });
-
         return list;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {ChangeSetPersister.NotFoundException.class, ValorNaoEncontrado.class})
-    public List<ErroNotFound> ErroNotFound(ValorNaoEncontrado exception) {
-
-        List<ErroNotFound> list = new ArrayList<>();
-        list.add(new ErroNotFound(exception.getMessage()));
-
+    public List<ErrorHangle> ErroNotFound(ValorNaoEncontrado exception) {
+        List<ErrorHangle> list = new ArrayList<>();
+        list.add(new ErrorHangle(exception.getMessage()));
         return list;
     }
 
@@ -40,9 +35,16 @@ public class ExecptionResponse {
     @ExceptionHandler(value = {ValorExisterExecption.class})
     public List<ErrorHangle> valorExixter(ValorExisterExecption existerExecption) {
         List<ErrorHangle> list = new ArrayList<>();
-
         list.add(new ErrorHangle(existerExecption.getMessage()));
-
         return list;
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(value = LoginExecption.class)
+    public List<ErrorHangle> loginNotFound(LoginExecption loginExecption){
+        List<ErrorHangle> listResponseErro = new ArrayList<>();
+        listResponseErro.add(new ErrorHangle(loginExecption.getMessage()));
+        return listResponseErro;
+    }
+
 }

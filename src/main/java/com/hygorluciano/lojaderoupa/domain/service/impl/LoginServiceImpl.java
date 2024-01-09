@@ -2,6 +2,8 @@ package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.login.LoginDto;
 import com.hygorluciano.lojaderoupa.domain.dto.login.LoginResponseDto;
+import com.hygorluciano.lojaderoupa.domain.exception.LoginExecption;
+import com.hygorluciano.lojaderoupa.domain.exception.ValorNaoEncontrado;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
 import com.hygorluciano.lojaderoupa.domain.service.LoginService;
 import com.hygorluciano.lojaderoupa.infra.security.TokenService;
@@ -24,13 +26,18 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseEntity<LoginResponseDto> login(LoginDto dto) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
+        try {
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
 
-        var auth = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            var auth = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        var token = tokenService.geraToken((Usuario) auth.getPrincipal());
+            var token = tokenService.geraToken((Usuario) auth.getPrincipal());
 
-        log.info(auth.getName() + "  Login efetuado com sucesso");
-        return ResponseEntity.ok(new LoginResponseDto(token));
+            log.info(auth.getName() + "  Login efetuado com sucesso");
+            return ResponseEntity.ok(new LoginResponseDto(token));
+        }catch (Exception e){
+            throw new LoginExecption("Email ou senha: ERRADO" + "  VERIFICAR OS VALORES PASSADOS");
+        }
+
     }
 }
