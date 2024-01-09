@@ -10,15 +10,14 @@ import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.categoria.ValidarCategoria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -37,7 +36,6 @@ public class CategoriaServiveImpl implements CategoriaService {
         this.validarCategorias = validarCategorias;
     }
 
-
     @Override
     public ResponseEntity<HttpStatus> criaCategoria(CadastraCategoriaDto categoriaDto) {
         validarCategorias.forEach(validarCategoria -> validarCategoria.validarNome(categoriaDto.nome()));
@@ -54,22 +52,20 @@ public class CategoriaServiveImpl implements CategoriaService {
     }
 
     @Override
-    public ResponseEntity<?> verCatetoria(Pageable pageable) {
+    public ResponseEntity<Page<Categoria>> verCatetoria(Pageable pageable) {
+
+        var categoriaPageable = categoriaRepository.findAll(pageable);
+
+//        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
+//                .map(categoria1 -> new VerCategoriaDto(
+//                        categoria1.getId(),
+//                        categoria1.getNomeCategoria()
+//                )).toList();
+
         log.info("Categoria Visualizado com Sucesso");
-
-        var tudoteste = categoriaRepository.findAll(pageable);
-
-
-        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
-                .map(categoria1 -> new VerCategoriaDto(
-                        categoria1.getId(),
-                        categoria1.getNomeCategoria()
-                )).toList();
-
-        return ResponseEntity.ok(tudoteste);
+        return ResponseEntity.ok(categoriaPageable);
 
     }
-
 
     @Override
     public ResponseEntity<List<VerCategoriaComListProdutoDto>> varCategoriaComListProduto(Long id) {

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,12 +43,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         for (ValidacaoUsuario validacaoUsuario : validacaoUsuarios) {
             validacaoUsuario.veriificarEmail(dto.email());
         }
-        Usuario novoUsuario = new Usuario(dto);
+
+        String encryptedSenha = new BCryptPasswordEncoder().encode(dto.senha());
+
+        Usuario novoUsuario = new Usuario(dto.nome(), dto.email(), encryptedSenha);
 
         usuarioRepository.save(novoUsuario);
+
+
         log.info("Usuario cadastrado com sucesso");
         log.info(novoUsuario.getId() + "   Id usuario para teste");
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -57,7 +62,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .map(usuario -> new VizualizarUsuarioDto(
                         usuario.getId(),
                         usuario.getNome(),
-                        usuario.getEmail()
+                        usuario.getEmail(),
+                        usuario.getCargo()
                 )).toList());
     }
 

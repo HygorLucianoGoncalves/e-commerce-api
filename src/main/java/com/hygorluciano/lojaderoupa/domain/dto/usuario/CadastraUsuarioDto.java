@@ -1,5 +1,6 @@
 package com.hygorluciano.lojaderoupa.domain.dto.usuario;
 
+import com.hygorluciano.lojaderoupa.domain.model.enums.Cargo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

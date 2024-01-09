@@ -3,6 +3,8 @@ package com.hygorluciano.lojaderoupa.domain.service;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaComListProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaDto;
+import com.hygorluciano.lojaderoupa.domain.model.Categoria;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

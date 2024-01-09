@@ -11,9 +11,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class CategoriaServiveImplTest {
 
     @Autowired
@@ -43,14 +46,14 @@ class CategoriaServiveImplTest {
     }
 
     @Test
-    void responsePutCategoria(){
+    void responsePutCategoria() {
         String name = this.categoriaRepository.findById(1L).get().getNomeCategoria();
         assertThat(name).isEqualTo("ROUPAS");
 
 
         CadastraCategoriaDto cadastraCategoriaDto = new CadastraCategoriaDto("Novo nome da categoria");
-        HttpEntity<CadastraCategoriaDto> request  = new HttpEntity<>(cadastraCategoriaDto);
-        ResponseEntity<Void> response = testRestTemplate.exchange("/categoria/1",HttpMethod.PUT,request,Void.class);
+        HttpEntity<CadastraCategoriaDto> request = new HttpEntity<>(cadastraCategoriaDto);
+        ResponseEntity<Void> response = testRestTemplate.exchange("/categoria/1", HttpMethod.PUT, request, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -59,8 +62,8 @@ class CategoriaServiveImplTest {
     }
 
     @Test
-    void responseDeleteCategoria(){
-        ResponseEntity<Void> deleteResponse = testRestTemplate.exchange("/categoria/1",HttpMethod.DELETE,null,Void.class);
+    void responseDeleteCategoria() {
+        ResponseEntity<Void> deleteResponse = testRestTemplate.exchange("/categoria/1", HttpMethod.DELETE, null, Void.class);
 
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
