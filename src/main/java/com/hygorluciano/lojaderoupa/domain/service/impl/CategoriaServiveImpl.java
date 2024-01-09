@@ -40,7 +40,7 @@ public class CategoriaServiveImpl implements CategoriaService {
     public ResponseEntity<HttpStatus> criaCategoria(CadastraCategoriaDto categoriaDto) {
         validarCategorias.forEach(validarCategoria -> validarCategoria.validarNome(categoriaDto.nome()));
 
-        Categoria novaCategoria = new Categoria(null, categoriaDto.nome(), null);
+        Categoria novaCategoria = new Categoria(categoriaDto.nome());
 
         categoriaRepository.save(novaCategoria);
 

@@ -24,4 +24,7 @@ public class Categoria {
             orphanRemoval = true)
     private List<Produto> produtoList = new ArrayList<>();
 
+    public Categoria(String nome) {
+        this.nomeCategoria = nome;
+    }
 }
