@@ -30,7 +30,7 @@ public class Produto {
     private Integer estoque;
 
     public Produto(CadastraProdutoDto dto, Categoria categoria) {
-        this.nome = dto.nome();
+        this.nome = dto.nome().toUpperCase();
         this.categoria = categoria;
         this.imagens = dto.imagens();
         this.valor = dto.valor();

@@ -25,6 +25,6 @@ public class Categoria {
     private List<Produto> produtoList = new ArrayList<>();
 
     public Categoria(String nome) {
-        this.nomeCategoria = nome;
+        this.nomeCategoria = nome.toUpperCase();
     }
 }

@@ -35,8 +35,10 @@ public class LoginServiceImpl implements LoginService {
 
             log.info(auth.getName() + "  Login efetuado com sucesso");
             return ResponseEntity.ok(new LoginResponseDto(token));
-        }catch (Exception e){
-            throw new LoginExecption("Email ou senha: ERRADO" + "  VERIFICAR OS VALORES PASSADOS");
+        }catch (RuntimeException e){
+            log.error(e.getMessage());
+            throw new LoginExecption("Email ou senha: ERRADO VERIFICAR OS VALORES PASSADOS");
+
         }
 
     }

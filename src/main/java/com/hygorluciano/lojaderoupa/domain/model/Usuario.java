@@ -30,6 +30,7 @@ public class Usuario implements UserDetails {
 
     private String senha;
 
+    @Enumerated(EnumType.STRING)
     private Cargo cargo = Cargo.USER;
 
     @OneToMany(
@@ -40,7 +41,7 @@ public class Usuario implements UserDetails {
     private List<Pedido> pedidoList = new ArrayList<>();
 
     public Usuario(String nome, String email, String senha) {
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
         this.email = email;
         this.senha = senha;
     }
