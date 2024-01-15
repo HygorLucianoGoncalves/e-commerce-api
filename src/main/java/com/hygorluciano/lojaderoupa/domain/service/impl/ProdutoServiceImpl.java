@@ -42,9 +42,9 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ResponseEntity<HttpStatus> cadastraProduto(CadastraProdutoDto dto) {
         validacaos.forEach(validacao -> {
             validacao.validarNomeProduto(dto.nome());
-            validacao.validarIdCategoria(dto.categoria_id());
+            validacao.validarIdCategoria(dto.nome_categoria().toUpperCase());
         });
-        Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
+        Categoria categoria = categoriaRepository.getReferenceByNomeCategoria(dto.nome_categoria().toUpperCase());
         Produto novoProduto = new Produto(dto, categoria);
         produtoRepository.save(novoProduto);
         log.info("Produto cadastrado com sucesso");
@@ -77,15 +77,15 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ResponseEntity<HttpStatus> atualizarProduto(Long id, AtualizarProdutoDto dto) {
         validacaos.forEach(validacaoProduto -> {
             validacaoProduto.validarId(id);
-            validacaoProduto.validarIdCategoria(dto.categoria_id());
+            //validacaoProduto.validarIdCategoria(dto.ca);
         });
 
         Produto produtoReferenceById = produtoRepository.getReferenceById(id);
-        Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
+        //Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
 
 
         produtoReferenceById.setNome(dto.nome() == null ? produtoReferenceById.getNome() : dto.nome());
-        produtoReferenceById.setCategoria(dto.categoria_id() == null ? produtoReferenceById.getCategoria() : categoria);
+        //produtoReferenceById.setCategoria(dto.categoria_id() == null ? produtoReferenceById.getCategoria() : categoria);
         produtoReferenceById.setImagens(dto.imagens() == null ? produtoReferenceById.getImagens() : dto.imagens());
         produtoReferenceById.setValor(dto.valor() == null ? produtoReferenceById.getValor() : dto.valor());
         produtoReferenceById.setEstoque(dto.estoque() == null ? produtoReferenceById.getEstoque() : dto.estoque());

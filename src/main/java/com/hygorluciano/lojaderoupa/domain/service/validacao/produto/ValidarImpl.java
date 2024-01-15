@@ -34,12 +34,12 @@ public class ValidarImpl implements ValidacaoProduto {
     }
 
     @Override
-    public void validarIdCategoria(Long id) {
-        boolean idCategoria = categoriaRepository.existsById(id);
+    public void validarIdCategoria(String nomeCategoira) {
+        boolean idCategoria = categoriaRepository.existsByNomeCategoria(nomeCategoira);
         if (!idCategoria) {
-            throw new ValorNaoEncontrado("Id Categoria Não Existe");
+            throw new ValorNaoEncontrado("Categoria Não Existe");
         }
     }
-
+    //Long id
 
 }

@@ -9,6 +9,6 @@ public interface ValidacaoProduto {
 
     void validarId(Long id);
 
-    void validarIdCategoria(Long id);
+    void validarIdCategoria(String nomeCategoira);
 
 }
