@@ -1,7 +1,7 @@
 CREATE TABLE pedido(
     id SERIAL PRIMARY KEY ,
     data_pedido TIMESTAMP,
-    status TEXT,
+    status VARCHAR(255),
     total double precision,
     usuario TEXT,
 
