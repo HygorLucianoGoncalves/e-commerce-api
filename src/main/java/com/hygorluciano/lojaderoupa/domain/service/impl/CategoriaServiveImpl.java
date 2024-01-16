@@ -1,6 +1,7 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.CadastraCategoriaDto;
+import com.hygorluciano.lojaderoupa.domain.dto.categoria.CategoriaPageDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaComListProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.categoria.VerCategoriaDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
@@ -8,16 +9,20 @@ import com.hygorluciano.lojaderoupa.domain.model.Categoria;
 import com.hygorluciano.lojaderoupa.domain.repository.CategoriaRepository;
 import com.hygorluciano.lojaderoupa.domain.service.CategoriaService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.categoria.ValidarCategoria;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -50,20 +55,19 @@ public class CategoriaServiveImpl implements CategoriaService {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-
     @Override
-    public ResponseEntity<Page<Categoria>> verCatetoria(Pageable pageable) {
-
-        var categoriaPageable = categoriaRepository.findAll(pageable);
-
-//        List<VerCategoriaDto> categoriaDtos = categoriaRepository.findAll(pageable).stream()
-//                .map(categoria1 -> new VerCategoriaDto(
-//                        categoria1.getId(),
-//                        categoria1.getNomeCategoria()
-//                )).toList();
+    public ResponseEntity<CategoriaPageDto> verCategoria(@PositiveOrZero  int pageNumber,@Positive @Max(100) int pageSize) {
+        Page<Categoria> page = categoriaRepository.findAll(PageRequest.of(pageNumber,pageSize));
+        List<VerCategoriaDto> categoriaDtos = page.get().map(categoria -> new VerCategoriaDto(
+                categoria.getId(),
+                categoria.getNomeCategoria()
+        )).collect(Collectors.toList());
+        CategoriaPageDto dto = new CategoriaPageDto(categoriaDtos, page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
 
         log.info("Categoria Visualizado com Sucesso");
-        return ResponseEntity.ok(categoriaPageable);
+        return ResponseEntity.ok(dto);
+
+
 
     }
 
