@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public record CadastraProdutoDto(
         @NotEmpty(message = "Nome não pode esta em branco")
         String nome,
-        String nome_categoria,//Long categoria_id
+        String nome_categoria,
         String imagens,
         @NotNull(message = "Valot não pode esta vazio")
         Double valor,
