@@ -2,6 +2,7 @@ package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.produto.AtualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.CadastraProdutoDto;
+import com.hygorluciano.lojaderoupa.domain.dto.produto.ProdutoPageDto;
 import com.hygorluciano.lojaderoupa.domain.dto.produto.VizualizarProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.exception.ValorNaoEncontrado;
 import com.hygorluciano.lojaderoupa.domain.model.Categoria;
@@ -11,8 +12,14 @@ import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
 import com.hygorluciano.lojaderoupa.domain.service.ProdutoService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.produto.ValidacaoProduto;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -47,15 +54,17 @@ public class ProdutoServiceImpl implements ProdutoService {
         Categoria categoria = categoriaRepository.getReferenceByNomeCategoria(dto.nome_categoria().toUpperCase());
         Produto novoProduto = new Produto(dto, categoria);
         produtoRepository.save(novoProduto);
-        log.info("Produto cadastrado com sucesso");
+        log.info(novoProduto.getNome() + " Produto cadastrado com sucesso");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    public ResponseEntity<List<VizualizarProdutoDto>> vizualizarProdutoDto() {
+    public ResponseEntity<ProdutoPageDto> vizualizarProdutoDto(@PositiveOrZero int page,
+                                                               @Positive @Max(100) int size) {
         try {
-            List<Produto> todosOsProdutos = produtoRepository.findAll();
-            List<VizualizarProdutoDto> dados = todosOsProdutos.stream()
+            Page<Produto> produtoPage =  produtoRepository.findAll(PageRequest.of(page,size,Sort.by(Sort.Direction.ASC,"id")));
+
+            List<VizualizarProdutoDto> vizualizarProdutoDtos = produtoPage.get()
                     .map(produto -> new VizualizarProdutoDto(
                             produto.getId(),
                             produto.getNome(),
@@ -66,9 +75,10 @@ public class ProdutoServiceImpl implements ProdutoService {
                     .collect(Collectors.toList());
             log.info("Lista de produtos tudo ok");
 
-            return ResponseEntity.ok(dados);
+            ProdutoPageDto produtoPageDto = new ProdutoPageDto(vizualizarProdutoDtos,produtoPage.getNumber(),produtoPage.getSize(),produtoPage.getTotalElements(),produtoPage.getTotalPages());
+            return ResponseEntity.ok(produtoPageDto);
         } catch (Exception e) {
-            throw new ValorNaoEncontrado("Erro na metodo GET");
+            throw new ValorNaoEncontrado("Erro na metodo GET Produto");
         }
 
     }
