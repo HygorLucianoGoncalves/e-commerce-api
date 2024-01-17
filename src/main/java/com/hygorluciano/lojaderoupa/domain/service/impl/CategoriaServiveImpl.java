@@ -56,13 +56,13 @@ public class CategoriaServiveImpl implements CategoriaService {
                 .build();
     }
     @Override
-    public ResponseEntity<CategoriaPageDto> verCategoria(@PositiveOrZero  int pageNumber,@Positive @Max(100) int pageSize) {
-        Page<Categoria> page = categoriaRepository.findAll(PageRequest.of(pageNumber,pageSize));
-        List<VerCategoriaDto> categoriaDtos = page.get().map(categoria -> new VerCategoriaDto(
+    public ResponseEntity<CategoriaPageDto> verCategoria(@PositiveOrZero  int page,@Positive @Max(100) int size) {
+        Page<Categoria> categoriaPage = categoriaRepository.findAll(PageRequest.of(page,size));
+        List<VerCategoriaDto> categoriaDtos = categoriaPage.get().map(categoria -> new VerCategoriaDto(
                 categoria.getId(),
                 categoria.getNomeCategoria()
         )).collect(Collectors.toList());
-        CategoriaPageDto dto = new CategoriaPageDto(categoriaDtos, page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
+        CategoriaPageDto dto = new CategoriaPageDto(categoriaDtos, categoriaPage.getNumber(), categoriaPage.getSize(), categoriaPage.getTotalElements(), categoriaPage.getTotalPages());
 
         log.info("Categoria Visualizado com Sucesso");
         return ResponseEntity.ok(dto);

@@ -1,6 +1,7 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.PedidoPageDto;
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosComListItensDto;
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.model.ItensPedidos;
@@ -14,14 +15,18 @@ import com.hygorluciano.lojaderoupa.domain.repository.UsuarioRepository;
 import com.hygorluciano.lojaderoupa.domain.service.PedidoService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.pedidos.ValidarPedido;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.usuarios.ValidacaoUsuario;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,16 +69,21 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public ResponseEntity<List<VizualizarPedidosDto>> verPeidos() {
+    public ResponseEntity<PedidoPageDto> verPeidos(@PositiveOrZero int page, @Positive @Max(100) int size) {
+        Page<Pedido> pedidoPage = pedidoRepository.findAll(PageRequest.of(page, size));
 
-        return ResponseEntity.ok(pedidoRepository.findAll().stream()
+
+        List<VizualizarPedidosDto> vizualizarPedidosDtoList = pedidoPage.get()
                 .map(pedido -> new VizualizarPedidosDto(
                         pedido.getId(),
                         pedido.getDataPedido(),
                         pedido.getStatus(),
                         pedido.getTotal(),
                         pedido.getUsuario().getNome()
-                )).collect(Collectors.toList()));
+                )).collect(Collectors.toList());
+
+        PedidoPageDto pedidoPageDto = new PedidoPageDto(vizualizarPedidosDtoList,pedidoPage.getNumber(),pedidoPage.getSize(),pedidoPage.getTotalElements(),pedidoPage.getTotalPages());
+        return ResponseEntity.ok(pedidoPageDto);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.hygorluciano.lojaderoupa.domain.service;
 
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.PedidoPageDto;
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosComListItensDto;
-import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
-import lombok.Lombok;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +14,7 @@ public interface PedidoService {
 
     ResponseEntity<HttpStatus> criaPedido(String id);
 
-    ResponseEntity<List<VizualizarPedidosDto>> verPeidos();
+    ResponseEntity<PedidoPageDto> verPeidos( int page,int size);
 
     ResponseEntity<List<VizualizarPedidosComListItensDto>> verPedidoComItens(Long idPedido);
 

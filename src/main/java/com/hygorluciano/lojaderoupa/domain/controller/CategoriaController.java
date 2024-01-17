@@ -29,9 +29,9 @@ public class CategoriaController{
         return categoriaService.criaCategoria(cadastraCategoriaDto);
     }
     @GetMapping
-    public ResponseEntity<CategoriaPageDto> verCategoria(@RequestParam(defaultValue = "0") @PositiveOrZero int pageNumber,
-                                                         @RequestParam(defaultValue = "10")  @Positive @Max(100) int pageSize){
-        return categoriaService.verCategoria(pageNumber,pageSize);
+    public ResponseEntity<CategoriaPageDto> verCategoria(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                         @RequestParam(defaultValue = "10")  @Positive @Max(100) int size){
+        return categoriaService.verCategoria(page,size);
     }
 
     @GetMapping("/{id}")

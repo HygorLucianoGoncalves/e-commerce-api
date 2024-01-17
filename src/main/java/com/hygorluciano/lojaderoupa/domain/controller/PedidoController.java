@@ -1,6 +1,10 @@
 package com.hygorluciano.lojaderoupa.domain.controller;
 
+import com.hygorluciano.lojaderoupa.domain.dto.pedidos.PedidoPageDto;
 import com.hygorluciano.lojaderoupa.domain.service.PedidoService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +22,9 @@ public class PedidoController {
         return pedidoService.criaPedido(id);
     }
     @GetMapping
-    public ResponseEntity<?> verPeididos(){
-        return pedidoService.verPeidos();
+    public ResponseEntity<PedidoPageDto> verPeididos(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                     @RequestParam(defaultValue = "10")  @Positive @Max(100) int size){
+        return pedidoService.verPeidos(page,size);
     }
 
     @GetMapping("/{id}")
