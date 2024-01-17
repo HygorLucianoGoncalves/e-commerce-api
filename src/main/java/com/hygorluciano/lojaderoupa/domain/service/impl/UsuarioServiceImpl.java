@@ -1,17 +1,19 @@
 package com.hygorluciano.lojaderoupa.domain.service.impl;
 
 import com.hygorluciano.lojaderoupa.domain.dto.pedidos.VizualizarPedidosDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioComListPedidoDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.*;
 import com.hygorluciano.lojaderoupa.domain.model.Usuario;
 import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.UsuarioRepository;
 import com.hygorluciano.lojaderoupa.domain.service.UsuarioService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.usuarios.ValidacaoUsuario;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -57,14 +60,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public ResponseEntity<List<VizualizarUsuarioDto>> verUsuario() {
-        return ResponseEntity.ok(usuarioRepository.findAll().stream()
+    public ResponseEntity<UsuarioPageDto> verUsuario(@PositiveOrZero int page, @Positive @Max(100) int size) {
+        Page<Usuario> usuarioPage = usuarioRepository.findAll(PageRequest.of(page, size));
+
+         List<VizualizarUsuarioDto> vizualizarUsuarioDtoList = usuarioPage.get()
                 .map(usuario -> new VizualizarUsuarioDto(
                         usuario.getId(),
                         usuario.getNome(),
                         usuario.getEmail(),
                         usuario.getCargo()
-                )).toList());
+                )).collect(Collectors.toList());
+
+        UsuarioPageDto responseDto = new UsuarioPageDto(vizualizarUsuarioDtoList,usuarioPage.getNumber(), usuarioPage.getSize(), usuarioPage.getTotalElements(), usuarioPage.getTotalPages());
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @Override
@@ -102,13 +111,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario usuarioAtualizado = usuarioRepository.getReferenceById(id);
 
-        usuarioAtualizado.setNome(dto.nome() == null ? usuarioAtualizado.getNome() : dto.nome());
+        usuarioAtualizado.setNome(dto.nome() == null ? usuarioAtualizado.getNome() : dto.nome().toUpperCase());
         usuarioAtualizado.setEmail(dto.email() == null ? usuarioAtualizado.getEmail() : dto.email());
         usuarioAtualizado.setSenha(dto.senha() == null ? usuarioAtualizado.getSenha() : dto.senha());
 
         usuarioRepository.save(usuarioAtualizado);
 
-        log.info("Usuario atualizado");
+        log.info(usuarioAtualizado.getEmail() + " Usuario atualizado");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

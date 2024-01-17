@@ -1,11 +1,11 @@
 package com.hygorluciano.lojaderoupa.domain.controller;
 
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.AtualizadoUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioComListPedidoDto;
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.VizualizarUsuarioDto;
+import com.hygorluciano.lojaderoupa.domain.dto.usuario.*;
 import com.hygorluciano.lojaderoupa.domain.service.UsuarioService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,9 @@ public class UsuarioController {
         return usuarioService.criandoUsuario(dados);
     }
     @GetMapping
-    public ResponseEntity<List<VizualizarUsuarioDto>> verUsuario(){
-        return usuarioService.verUsuario();
+    public ResponseEntity<UsuarioPageDto> verUsuario(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                     @RequestParam(defaultValue = "10") @Positive @Max(100) int size){
+        return usuarioService.verUsuario(page, size);
     };
 
     @GetMapping("/{id}")
