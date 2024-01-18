@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -57,7 +58,7 @@ public class CategoriaServiveImpl implements CategoriaService {
     }
     @Override
     public ResponseEntity<CategoriaPageDto> verCategoria(@PositiveOrZero  int page,@Positive @Max(100) int size) {
-        Page<Categoria> categoriaPage = categoriaRepository.findAll(PageRequest.of(page,size));
+        Page<Categoria> categoriaPage = categoriaRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC,"id")));
         List<VerCategoriaDto> categoriaDtos = categoriaPage.get().map(categoria -> new VerCategoriaDto(
                 categoria.getId(),
                 categoria.getNomeCategoria()

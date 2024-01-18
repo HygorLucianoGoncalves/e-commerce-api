@@ -123,12 +123,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public ResponseEntity<HttpStatus> deletaUsuario(String id) {
-//        validacaoUsuarios.forEach(validacaoUsuario -> validacaoUsuario.verificarId(id));
-// METODO ESTA COM ERRO
-//        usuarioRepository.deleteById(id);
-//
-////        log.info(id + "  Usuario deletado com sucesso");
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        return null;
+        validacaoUsuarios.forEach(validacaoUsuario -> validacaoUsuario.verificarId(id));
+        usuarioRepository.deleteById(id);
+
+        log.info(id + "  Usuario deletado com sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
