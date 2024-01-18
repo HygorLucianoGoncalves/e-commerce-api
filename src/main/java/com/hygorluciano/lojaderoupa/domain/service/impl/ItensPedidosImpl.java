@@ -3,6 +3,7 @@ package com.hygorluciano.lojaderoupa.domain.service.impl;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AddProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AtualizarItensPedidosDto;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.ItensPedidoPageDto;
 import com.hygorluciano.lojaderoupa.domain.model.ItensPedidos;
 import com.hygorluciano.lojaderoupa.domain.model.Pedido;
 import com.hygorluciano.lojaderoupa.domain.model.Produto;
@@ -11,14 +12,18 @@ import com.hygorluciano.lojaderoupa.domain.repository.PedidoRepository;
 import com.hygorluciano.lojaderoupa.domain.repository.ProdutoRepository;
 import com.hygorluciano.lojaderoupa.domain.service.ItensPedidosService;
 import com.hygorluciano.lojaderoupa.domain.service.validacao.ItensPedidos.ValidarItensPedidos;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.util.List;
 
 @Component
@@ -58,9 +63,13 @@ public class ItensPedidosImpl implements ItensPedidosService {
     }
 
     @Override
-    public ResponseEntity<List<GetItensPedidos>> verItensPedido() {
-        List<GetItensPedidos> itensPedidos = itensPedidosRepository.findAll().stream().map(
-                itensPedidos1 -> new GetItensPedidos(
+    public ResponseEntity<ItensPedidoPageDto> verItensPedido(@PositiveOrZero int page,
+                                                             @Positive @Max(100) int size) {
+
+        Page<ItensPedidos> itensPedidosPage =  itensPedidosRepository.findAll(PageRequest.of(page,size));
+
+        List<GetItensPedidos> getItensPedidos = itensPedidosPage.get()
+                .map(itensPedidos1 -> new GetItensPedidos(
                         itensPedidos1.getId(),
                         itensPedidos1.getPedido().getId(),
                         itensPedidos1.getProduto().getNome(),
@@ -69,9 +78,11 @@ public class ItensPedidosImpl implements ItensPedidosService {
                         itensPedidos1.getQuantidade()
                 )).toList();
 
+
+        ItensPedidoPageDto itensPedidoPage = new ItensPedidoPageDto(getItensPedidos,itensPedidosPage.getNumber(),itensPedidosPage.getSize(),itensPedidosPage.getTotalElements(),itensPedidosPage.getTotalPages());
         log.info("Get ItensPedidos foi aberto ");
 
-        return ResponseEntity.ok(itensPedidos);
+        return ResponseEntity.ok(itensPedidoPage);
     }
 
     @Override

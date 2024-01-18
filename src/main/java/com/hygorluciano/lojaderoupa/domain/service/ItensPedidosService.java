@@ -2,16 +2,14 @@ package com.hygorluciano.lojaderoupa.domain.service;
 
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AddProdutoDto;
 import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.AtualizarItensPedidosDto;
-import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.GetItensPedidos;
+import com.hygorluciano.lojaderoupa.domain.dto.ItensPedidos.ItensPedidoPageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 public interface ItensPedidosService {
     ResponseEntity<HttpStatus> addProduto(AddProdutoDto dto);
 
-    ResponseEntity<List<GetItensPedidos>> verItensPedido();
+    ResponseEntity<ItensPedidoPageDto> verItensPedido(int page, int size);
 
     ResponseEntity<HttpStatus> atualizarQuantidadeItensPedidos(Long idItensPedido, AtualizarItensPedidosDto dto);
 
