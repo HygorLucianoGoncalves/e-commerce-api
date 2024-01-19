@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hygorluciano</groupId>
-	<artifactId>lojaderoupa</artifactId>
+	<artifactId>e-commerce-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lojaderoupa</name>
 	<description>Demo project for Spring Boot criando uma loja de roupas </description>
