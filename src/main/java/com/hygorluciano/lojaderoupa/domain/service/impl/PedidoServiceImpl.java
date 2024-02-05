@@ -138,7 +138,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         }
         pedido.setTotal(valorTotal);
-        pedido.setStatus(Status.EM_PROCESSAMENTO);
+        pedido.setStatus(Status.AGUARDANDO_PAGAMENTO);
         pedidoRepository.save(pedido);
 
         log.info("Pedido confirmado com sucesso");

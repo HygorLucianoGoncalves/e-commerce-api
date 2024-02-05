@@ -94,7 +94,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         //Categoria categoria = categoriaRepository.getReferenceById(dto.categoria_id());
 
 
-        produtoReferenceById.setNome(dto.nome() == null ? produtoReferenceById.getNome() : dto.nome());
+        produtoReferenceById.setNome(dto.nome() == null ? produtoReferenceById.getNome() : dto.nome().toUpperCase());
         //produtoReferenceById.setCategoria(dto.categoria_id() == null ? produtoReferenceById.getCategoria() : categoria);
         produtoReferenceById.setImagens(dto.imagens() == null ? produtoReferenceById.getImagens() : dto.imagens());
         produtoReferenceById.setValor(dto.valor() == null ? produtoReferenceById.getValor() : dto.valor());

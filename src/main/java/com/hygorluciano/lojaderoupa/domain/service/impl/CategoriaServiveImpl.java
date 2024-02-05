@@ -109,7 +109,7 @@ public class CategoriaServiveImpl implements CategoriaService {
 
             Categoria categoria = categoriaRepository.getReferenceById(id);
 
-            categoria.setNomeCategoria(cadastraCategoriaDto.nome() == null ? categoria.getNomeCategoria() : cadastraCategoriaDto.nome());
+            categoria.setNomeCategoria(cadastraCategoriaDto.nome() == null ? categoria.getNomeCategoria() : cadastraCategoriaDto.nome().toUpperCase());
 
             categoriaRepository.save(categoria);
 

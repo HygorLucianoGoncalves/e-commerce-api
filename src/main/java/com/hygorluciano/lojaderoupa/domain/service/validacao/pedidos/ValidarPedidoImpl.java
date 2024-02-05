@@ -27,8 +27,8 @@ public class ValidarPedidoImpl implements ValidarPedido{
 
     @Override
     public void validarStatus(Status status) {
-        if (status == Status.EM_PROCESSAMENTO){
-            throw new ValorExisterExecption("O Pedido ja esta em processamento de pagamento ");
+        if (status == Status.AGUARDANDO_PAGAMENTO){
+            throw new ValorExisterExecption("O Pedido ja esta em Agurdando Pagamento ");
         }
     }
 }
