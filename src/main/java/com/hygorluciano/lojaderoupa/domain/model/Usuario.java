@@ -1,6 +1,5 @@
 package com.hygorluciano.lojaderoupa.domain.model;
 
-import com.hygorluciano.lojaderoupa.domain.dto.usuario.CadastraUsuarioDto;
 import com.hygorluciano.lojaderoupa.domain.model.enums.Cargo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +23,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String nome;
+    private String primeiroNome;
+
+    private String sobrenome;
 
     private String email;
 
@@ -40,10 +41,15 @@ public class Usuario implements UserDetails {
     )
     private List<Pedido> pedidoList = new ArrayList<>();
 
-    public Usuario(String nome, String email, String senha) {
-        this.nome = nome.toUpperCase();
+    public Usuario(String primeiroNome, String sobrenome, String email, String senha) {
+        this.primeiroNome = primeiroNome.toUpperCase();
+        this.sobrenome = sobrenome.toUpperCase();
         this.email = email;
         this.senha = senha;
+    }
+
+    public String nomeCompleto() {
+        return this.primeiroNome +" "+ this.sobrenome;
     }
 
     @Override

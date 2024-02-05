@@ -79,7 +79,7 @@ public class PedidoServiceImpl implements PedidoService {
                         pedido.getDataPedido(),
                         pedido.getStatus(),
                         pedido.getTotal(),
-                        pedido.getUsuario().getNome()
+                        pedido.getUsuario().nomeCompleto()
                 )).collect(Collectors.toList());
 
         PedidoPageDto pedidoPageDto = new PedidoPageDto(vizualizarPedidosDtoList,pedidoPage.getNumber(),pedidoPage.getSize(),pedidoPage.getTotalElements(),pedidoPage.getTotalPages());
@@ -108,7 +108,7 @@ public class PedidoServiceImpl implements PedidoService {
                         pedido.getDataPedido(),
                         pedido.getStatus(),
                         pedido.getTotal(),
-                        pedido.getUsuario().getNome(),
+                        pedido.getUsuario().nomeCompleto(),
                         listItens
                 )
         );

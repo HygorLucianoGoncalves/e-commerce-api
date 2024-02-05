@@ -49,7 +49,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         String encryptedSenha = new BCryptPasswordEncoder().encode(dto.senha());
 
-        Usuario novoUsuario = new Usuario(dto.nome(), dto.email(), encryptedSenha);
+        Usuario novoUsuario = new Usuario(dto.primeiro_nome(), dto.sobrenome(), dto.email(), encryptedSenha);
 
         usuarioRepository.save(novoUsuario);
 
@@ -66,7 +66,8 @@ public class UsuarioServiceImpl implements UsuarioService {
          List<VizualizarUsuarioDto> vizualizarUsuarioDtoList = usuarioPage.get()
                 .map(usuario -> new VizualizarUsuarioDto(
                         usuario.getId(),
-                        usuario.getNome(),
+                        usuario.getPrimeiroNome(),
+                        usuario.getSobrenome(),
                         usuario.getEmail(),
                         usuario.getCargo()
                 )).collect(Collectors.toList());
@@ -87,13 +88,14 @@ public class UsuarioServiceImpl implements UsuarioService {
                         pedido.getDataPedido(),
                         pedido.getStatus(),
                         pedido.getTotal(),
-                        pedido.getUsuario().getNome()
+                        pedido.getUsuario().nomeCompleto()
                 )).toList();
 
         List<VizualizarUsuarioComListPedidoDto> dtos = List.of(
                 new VizualizarUsuarioComListPedidoDto(
                         usuario.getId(),
-                        usuario.getNome(),
+                        usuario.getPrimeiroNome(),
+                        usuario.getSobrenome(),
                         usuario.getEmail(),
                         listPedidoDtos
                 )
@@ -111,7 +113,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario usuarioAtualizado = usuarioRepository.getReferenceById(id);
 
-        usuarioAtualizado.setNome(dto.nome() == null ? usuarioAtualizado.getNome() : dto.nome().toUpperCase());
+        usuarioAtualizado.setPrimeiroNome(dto.primeiro_nome() == null ? usuarioAtualizado.getPrimeiroNome() : dto.primeiro_nome().toUpperCase());
+        usuarioAtualizado.setSobrenome(dto.sobrenome() == null ? usuarioAtualizado.getSobrenome() : dto.sobrenome().toUpperCase());
         usuarioAtualizado.setEmail(dto.email() == null ? usuarioAtualizado.getEmail() : dto.email());
         usuarioAtualizado.setSenha(dto.senha() == null ? usuarioAtualizado.getSenha() : dto.senha());
 

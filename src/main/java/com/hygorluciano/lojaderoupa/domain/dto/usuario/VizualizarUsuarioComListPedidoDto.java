@@ -6,7 +6,8 @@ import java.util.List;
 
 public record VizualizarUsuarioComListPedidoDto(
         String id,
-        String nome,
+        String primeiro_nome,
+        String sobrenome,
         String email,
         List<VizualizarPedidosDto> pedidos_do_usuario
 ) {
