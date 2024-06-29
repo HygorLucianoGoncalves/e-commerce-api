@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
+		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hygorluciano</groupId>
 	<artifactId>e-commerce-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>lojaderoupa</name>
+	<name>e-commerce-api</name>
 	<description>Demo project for Spring Boot criando uma loja de roupas </description>
 	<properties>
 		<java.version>17</java.version>
